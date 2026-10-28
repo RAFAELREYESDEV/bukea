@@ -16,11 +16,11 @@ export default function BottomNav({ activeTab, onChangeTab, reservationCount = 0
     { id: 'explorar' as NavTab, label: 'Explorar', icon: Compass },
     { id: 'mapa' as NavTab, label: 'Mapa', icon: MapPin },
     { id: 'reservas' as NavTab, label: 'Reservas', icon: CalendarCheck, badge: reservationCount > 0 ? reservationCount : null },
-    { id: 'wallet' as NavTab, label: 'Wallet VIP', icon: Wallet, isVip: true },
+    { id: 'wallet' as NavTab, label: 'Wallet', icon: Wallet },
   ];
 
   return (
-    <nav className="bottom-dock" aria-label="Navegación principal">
+    <nav className="bottom-dock-glass" aria-label="Navegación principal">
       <div className="grid grid-cols-4 items-center gap-1">
         {tabs.map((tab) => {
           const Icon = tab.icon;
@@ -30,43 +30,29 @@ export default function BottomNav({ activeTab, onChangeTab, reservationCount = 0
             <button
               key={tab.id}
               onClick={() => onChangeTab(tab.id)}
-              className={`relative flex flex-col items-center justify-center py-1.5 px-1 rounded-2xl transition-all duration-300 ${
-                isActive
-                  ? 'text-white'
-                  : 'text-slate-400 hover:text-slate-200'
+              className={`relative flex flex-col items-center justify-center py-1.5 px-2 rounded-full transition-all duration-200 ${
+                isActive ? 'text-black font-semibold' : 'text-neutral-400 hover:text-neutral-700'
               }`}
             >
-              {/* Background pill indicador activo */}
               {isActive && (
-                <div className="absolute inset-0 bg-gradient-to-tr from-amber-500/20 to-yellow-300/10 rounded-2xl border border-amber-400/40 shadow-[0_0_15px_rgba(212,175,55,0.25)]" />
+                <div className="absolute inset-0 bg-black/5 rounded-full" />
               )}
 
-              <div className="relative flex items-center justify-center mb-1">
+              <div className="relative flex items-center justify-center mb-0.5">
                 <Icon
-                  size={20}
-                  className={`transition-transform duration-300 ${
-                    isActive ? 'scale-110 text-amber-300' : ''
-                  }`}
+                  size={19}
+                  strokeWidth={isActive ? 2.3 : 1.8}
+                  className={`transition-colors ${isActive ? 'text-black' : 'text-neutral-400'}`}
                 />
 
-                {/* Badge de contador de reservas */}
                 {tab.badge && (
-                  <span className="absolute -top-1.5 -right-2 w-4 h-4 rounded-full bg-amber-400 text-black text-[10px] font-black flex items-center justify-center shadow-[0_0_8px_rgba(212,175,55,0.6)]">
+                  <span className="absolute -top-1.5 -right-2.5 w-4 h-4 rounded-full bg-black text-white text-[10px] font-bold flex items-center justify-center">
                     {tab.badge}
                   </span>
                 )}
-
-                {/* Dot VIP */}
-                {tab.isVip && !isActive && (
-                  <span className="absolute -top-1 -right-1 w-2 h-2 rounded-full bg-amber-400 animate-pulse shadow-[0_0_6px_#D4AF37]" />
-                )}
               </div>
 
-              <span
-                className={`relative text-[11px] font-medium tracking-tight ${
-                  isActive ? 'font-bold text-amber-200' : 'text-slate-400'
-                }`}
-              >
+              <span className="relative text-[11px] tracking-tight">
                 {tab.label}
               </span>
             </button>

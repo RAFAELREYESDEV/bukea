@@ -11,13 +11,13 @@ import {
   Star, 
   Compass, 
   Glasses, 
-  Rotate3d, 
-  Calendar, 
+  Box, 
   ArrowRight, 
   ChevronRight,
-  Filter,
-  Flame,
-  CheckCircle2
+  UtensilsCrossed,
+  SunMedium,
+  Building2,
+  Wine
 } from 'lucide-react';
 import { Business, BUSINESSES_MOCK, StoredReservation, normalizeBusiness } from './data/businesses';
 import BottomNav, { NavTab } from './components/BottomNav';
@@ -28,13 +28,19 @@ import ReservasView from './components/ReservasView';
 const GoogleMapa = dynamic(() => import('./components/GoogleMapa'), {
   ssr: false,
   loading: () => (
-    <div className="h-72 rounded-3xl bg-neutral-900/60 border border-white/10 flex items-center justify-center text-slate-500 text-xs animate-pulse">
-      Cargando mapa interactivo de Margarita…
+    <div className="h-72 rounded-3xl bg-neutral-100 border border-black/10 flex items-center justify-center text-neutral-400 text-xs font-text">
+      Cargando mapa de Margarita…
     </div>
   ),
 });
 
-const CATEGORIES = ['Todos', 'Restaurante', 'Club', 'Posada', 'Terraza'];
+const CATEGORIES = [
+  { id: 'Todos', label: 'Todos', icon: Compass },
+  { id: 'Restaurante', label: 'Restaurantes', icon: UtensilsCrossed },
+  { id: 'Club', label: 'Beach Clubs', icon: SunMedium },
+  { id: 'Posada', label: 'Posadas', icon: Building2 },
+  { id: 'Terraza', label: 'Terrazas', icon: Wine },
+];
 
 export default function Home() {
   const [bizs, setBizs] = useState<Business[]>(BUSINESSES_MOCK);
@@ -55,11 +61,11 @@ export default function Home() {
         setReservations(JSON.parse(saved));
       }
     } catch {
-      // Ignorar errores de localStorage
+      // Ignorar errores
     }
   }, []);
 
-  // Intentar cargar datos de la API Fastify de Rol 3 (con fallback y normalización)
+  // Cargar datos de la API Fastify de Rol 3
   useEffect(() => {
     fetch('/api/web/businesses')
       .then((r) => r.json())
@@ -71,7 +77,7 @@ export default function Home() {
         }
       })
       .catch(() => {
-        // Fallback natural a BUSINESSES_MOCK
+        // Fallback natural a datos semilla
       });
   }, []);
 
@@ -93,32 +99,27 @@ export default function Home() {
   }, [bizs, cat, only360, onlyAR, q]);
 
   return (
-    <div className="min-h-screen bg-[#07080b] text-slate-100 selection:bg-amber-400 selection:text-black">
-      {/* Topbar Luxury */}
-      <header className="luxury-header">
+    <div className="min-h-screen bg-white text-[#0A0A0A] font-text">
+      {/* Header Liquid Glass */}
+      <header className="liquid-glass-header">
         <div className="max-w-4xl mx-auto flex items-center justify-between">
-          <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-amber-400 to-yellow-200 flex items-center justify-center text-black font-extrabold text-base shadow-[0_0_15px_rgba(212,175,55,0.4)]">
-              B
-            </div>
-            <div>
-              <div className="font-display font-extrabold text-lg tracking-tight text-white flex items-center gap-1">
-                Bookealo<span className="text-amber-400 text-xl leading-none">.</span>
-              </div>
-              <div className="text-[10px] text-amber-200/80 tracking-widest uppercase font-mono">
-                Margarita VIP Edition
-              </div>
-            </div>
+          <div className="flex items-center gap-3">
+            <span className="font-logo text-4xl text-black leading-none pt-1">
+              Bukea
+            </span>
+            <span className="text-[10px] uppercase tracking-[0.18em] text-neutral-400 font-semibold font-text border-l border-black/15 pl-3">
+              Margarita
+            </span>
           </div>
 
           <div className="flex items-center gap-2">
             <button
               onClick={() => setNavTab('wallet')}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/5 border border-amber-400/30 text-amber-300 text-xs font-semibold hover:bg-white/10 transition-colors"
+              className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-neutral-100 border border-black/10 text-neutral-800 text-xs font-semibold hover:bg-neutral-200 transition-colors"
             >
-              <Sparkles size={13} className="text-amber-400" />
-              <span className="hidden sm:inline">Pase VIP</span>
-              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+              <Sparkles size={12} className="text-neutral-700" />
+              <span className="hidden sm:inline">Pase Digital</span>
+              <span className="w-1.5 h-1.5 rounded-full bg-black" />
             </button>
           </div>
         </div>
@@ -145,65 +146,63 @@ export default function Home() {
 
       {(navTab === 'explorar' || navTab === 'mapa') && (
         <main className="max-w-4xl mx-auto px-4 pb-28 pt-4">
-          {/* Banner de Bienvenida y Propuesta de Valor */}
-          <div className="relative rounded-3xl p-6 sm:p-8 mb-6 overflow-hidden border border-amber-400/20 bg-gradient-to-r from-amber-950/40 via-black to-neutral-900 shadow-[0_10px_30px_rgba(0,0,0,0.8)]">
-            <div className="absolute top-0 right-0 w-80 h-80 bg-amber-400/10 rounded-full blur-3xl pointer-events-none" />
-
-            <div className="relative z-10 max-w-xl">
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-400/10 border border-amber-400/25 text-amber-300 text-xs font-bold mb-3">
-                <Flame size={13} className="text-amber-400" />
-                <span>El Trato Real · Reservas de Estatus</span>
+          {/* Banner Editorial Minimalista Liquid Glass (Sin Gradients) */}
+          <div className="liquid-glass-card p-6 sm:p-8 mb-6 bg-white">
+            <div className="max-w-xl">
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-neutral-100 border border-black/10 text-neutral-800 text-[11px] font-semibold tracking-wider uppercase mb-3">
+                <Sparkles size={12} className="text-neutral-600" />
+                <span>Ecosistema de Reservas & Inmersión</span>
               </div>
-              <h1 className="text-2xl sm:text-4xl font-extrabold tracking-tight font-display text-white leading-tight">
-                Las mejores mesas de Margarita, <span className="gradient-gold-text">en un toque.</span>
+              <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-black leading-tight font-text">
+                Reservas exclusivas, <span className="font-accent italic font-normal text-4xl sm:text-5xl">en un toque.</span>
               </h1>
-              <p className="text-slate-300 text-xs sm:text-sm mt-2 leading-relaxed">
-                Inmersión 360°, menús en Realidad Aumentada y acceso preferencial en Beach Clubs, alta gastronomía y posadas boutique.
+              <p className="text-neutral-600 text-xs sm:text-sm mt-2 leading-relaxed font-text">
+                Tours virtuales 360°, platos en Realidad Aumentada y acceso preferencial en los mejores restaurantes, clubes de playa y posadas.
               </p>
             </div>
           </div>
 
-          {/* Barra de Búsqueda Premium */}
+          {/* Barra de Búsqueda Minimalista */}
           <div className="relative mb-5">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-neutral-400" size={17} />
             <input
               type="text"
               value={q}
               onChange={(e) => setQ(e.target.value)}
-              placeholder="Buscar por restaurante, cocina (mariscos, carnes) o zona (Pampatar, Playa El Agua)..."
-              className="luxury-input pl-11 pr-4 py-3.5 text-sm rounded-2xl"
+              placeholder="Buscar por restaurante, comida (italiana, nikkei, marina) o zona..."
+              className="input-minimal pl-11 pr-4 py-3.5 text-sm rounded-2xl"
             />
             {q && (
               <button
                 onClick={() => setQ('')}
-                className="absolute right-4 top-1/2 -translate-y-1/2 text-xs text-slate-400 hover:text-white"
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-xs text-neutral-400 hover:text-black"
               >
                 Limpiar
               </button>
             )}
           </div>
 
-          {/* Selector de Categorías & Filtros Rápidos */}
+          {/* Selector de Categorías (Sin Emojis, con Iconos Minimalistas) */}
           <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-none mb-5 -mx-4 px-4">
-            {CATEGORIES.map((c) => (
-              <button
-                key={c}
-                data-active={cat === c}
-                onClick={() => setCat(c)}
-                className="category-chip"
-              >
-                {c === 'Todos' && '✨ Todos'}
-                {c === 'Restaurante' && '🍽️ Restaurantes'}
-                {c === 'Club' && '🏖️ Beach Clubs'}
-                {c === 'Posada' && '🏨 Posadas'}
-                {c === 'Terraza' && '🍸 Terrazas'}
-              </button>
-            ))}
+            {CATEGORIES.map((c) => {
+              const Icon = c.icon;
+              return (
+                <button
+                  key={c.id}
+                  data-active={cat === c.id}
+                  onClick={() => setCat(c.id)}
+                  className="chip-minimal"
+                >
+                  <Icon size={14} />
+                  <span>{c.label}</span>
+                </button>
+              );
+            })}
 
             <button
               onClick={() => setOnly360(!only360)}
               data-active={only360}
-              className="category-chip"
+              className="chip-minimal"
             >
               <Glasses size={14} />
               <span>Tour 360°</span>
@@ -212,47 +211,47 @@ export default function Home() {
             <button
               onClick={() => setOnlyAR(!onlyAR)}
               data-active={onlyAR}
-              className="category-chip"
+              className="chip-minimal"
             >
-              <Rotate3d size={14} />
+              <Box size={14} />
               <span>Platos AR</span>
             </button>
           </div>
 
           {/* Sub-selector Vista: Feed vs Mapa */}
           <div className="flex items-center justify-between mb-4">
-            <div className="text-xs font-bold text-slate-400 uppercase tracking-wider">
-              {filteredBizs.length} {filteredBizs.length === 1 ? 'Lugar Exclusivo' : 'Lugares Exclusivos'}
+            <div className="text-xs font-semibold text-neutral-500 uppercase tracking-wider">
+              {filteredBizs.length} {filteredBizs.length === 1 ? 'Lugar' : 'Lugares'}
             </div>
 
-            <div className="flex bg-white/5 p-1 rounded-xl border border-white/10 text-xs">
+            <div className="flex bg-neutral-100 p-1 rounded-full border border-black/5 text-xs">
               <button
                 onClick={() => setNavTab('explorar')}
-                className={`px-3 py-1 rounded-lg font-semibold transition-all ${
+                className={`px-3 py-1 rounded-full font-medium transition-all ${
                   navTab === 'explorar'
-                    ? 'bg-amber-400 text-black shadow'
-                    : 'text-slate-400 hover:text-white'
+                    ? 'bg-black text-white shadow-sm'
+                    : 'text-neutral-500 hover:text-black'
                 }`}
               >
                 Tarjetas
               </button>
               <button
                 onClick={() => setNavTab('mapa')}
-                className={`px-3 py-1 rounded-lg font-semibold transition-all ${
+                className={`px-3 py-1 rounded-full font-medium transition-all ${
                   navTab === 'mapa'
-                    ? 'bg-amber-400 text-black shadow'
-                    : 'text-slate-400 hover:text-white'
+                    ? 'bg-black text-white shadow-sm'
+                    : 'text-neutral-500 hover:text-black'
                 }`}
               >
-                Mapa 360°
+                Mapa
               </button>
             </div>
           </div>
 
           {/* VISTA MAPA */}
           {navTab === 'mapa' && (
-            <div className="space-y-4 mb-6 animate-in fade-in">
-              <div className="rounded-3xl overflow-hidden border border-white/15 shadow-2xl">
+            <div className="space-y-4 mb-6">
+              <div className="rounded-3xl overflow-hidden border border-black/10 shadow-sm">
                 <GoogleMapa
                   bizs={filteredBizs}
                   onPick={(id) => {
@@ -263,24 +262,24 @@ export default function Home() {
               </div>
 
               {selectedMapBiz && (
-                <div className="luxury-card p-4 flex gap-4 items-center animate-in slide-in-from-bottom-3 border-amber-400/40">
+                <div className="liquid-glass-card p-4 flex gap-4 items-center bg-white border-black/15">
                   <img
                     src={selectedMapBiz.heroImage}
                     alt={selectedMapBiz.name}
-                    className="w-20 h-20 rounded-2xl object-cover shrink-0"
+                    className="w-20 h-20 rounded-2xl object-cover shrink-0 border border-black/10"
                   />
                   <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-1 text-xs text-amber-400 font-bold">
-                      <Star size={13} fill="currentColor" />
+                    <div className="flex items-center gap-1 text-xs text-black font-semibold">
+                      <Star size={12} fill="currentColor" />
                       <span>{(selectedMapBiz.rating ?? 4.8).toFixed(1)}</span>
-                      <span className="text-slate-400 font-normal">({selectedMapBiz.reviewCount ?? 84})</span>
+                      <span className="text-neutral-400 font-normal">({selectedMapBiz.reviewCount ?? 84})</span>
                     </div>
-                    <div className="font-bold text-white text-base truncate mt-0.5">{selectedMapBiz.name}</div>
-                    <div className="text-xs text-slate-400 truncate">{selectedMapBiz.cuisine} · {selectedMapBiz.zone}</div>
+                    <div className="font-bold text-black text-base truncate mt-0.5">{selectedMapBiz.name}</div>
+                    <div className="text-xs text-neutral-500 truncate">{selectedMapBiz.cuisine} · {selectedMapBiz.zone}</div>
                   </div>
                   <button
                     onClick={() => router.push(`/lugar/${selectedMapBiz.id}`)}
-                    className="btn-gold text-xs py-2 px-3 shrink-0"
+                    className="btn-solid text-xs py-2 px-3 shrink-0"
                   >
                     <span>Ver</span>
                     <ArrowRight size={14} />
@@ -290,61 +289,55 @@ export default function Home() {
             </div>
           )}
 
-          {/* VISTA TARJETAS (FEED LUXURY) */}
+          {/* VISTA TARJETAS (FEED EDITORIAL LIQUID GLASS EN BLANCO) */}
           {navTab === 'explorar' && (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
               {filteredBizs.map((biz) => (
                 <div
                   key={biz.id}
-                  className="luxury-card overflow-hidden group flex flex-col justify-between"
+                  className="liquid-glass-card overflow-hidden group flex flex-col justify-between bg-white"
                 >
-                  {/* Foto de Portada con Badges Flotantes */}
+                  {/* Foto con Badges Minimalistas */}
                   <div className="relative aspect-[16/10] overflow-hidden">
                     <img
                       src={biz.heroImage}
                       alt={biz.name}
-                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                       loading="lazy"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent" />
 
                     {/* Badge Superior Izquierdo: Categoría & Zona */}
                     <div className="absolute top-3 left-3 flex flex-wrap gap-1.5">
-                      <span className="badge-dark text-[11px]">
+                      <span className="badge-minimal">
                         {biz.category}
                       </span>
-                      {biz.featuredBadge && (
-                        <span className="badge-gold text-[10px]">
-                          {biz.featuredBadge}
-                        </span>
-                      )}
                     </div>
 
-                    {/* Badge Superior Derecho: Rating */}
-                    <div className="absolute top-3 right-3 badge-dark text-amber-300 font-bold text-xs flex items-center gap-1 shadow-md">
-                      <Star size={12} fill="currentColor" className="text-amber-400" />
+                    {/* Badge Superior Derecho: Rating Minimal */}
+                    <div className="absolute top-3 right-3 badge-minimal text-black font-semibold text-xs flex items-center gap-1 shadow-sm">
+                      <Star size={11} fill="currentColor" className="text-black" />
                       <span>{(biz.rating ?? 4.8).toFixed(1)}</span>
-                      <span className="text-slate-400 text-[10px] font-normal">({biz.reviewCount ?? 84})</span>
+                      <span className="text-neutral-500 text-[10px] font-normal">({biz.reviewCount ?? 84})</span>
                     </div>
 
-                    {/* Inmersión Tags (Inferior Izquierda sobre imagen) */}
-                    <div className="absolute bottom-3 left-3 flex items-center gap-2">
+                    {/* Tags Minimalistas Sobre Imagen */}
+                    <div className="absolute bottom-3 left-3 flex items-center gap-1.5">
                       {biz.tour_360 && (
-                        <span className="px-2 py-0.5 rounded-full bg-black/70 backdrop-blur-md border border-white/20 text-white text-[10px] font-semibold flex items-center gap-1">
-                          <Glasses size={11} className="text-amber-400" />
+                        <span className="badge-minimal text-[10px]">
+                          <Glasses size={11} />
                           <span>360°</span>
                         </span>
                       )}
                       {biz.hasAR && (
-                        <span className="px-2 py-0.5 rounded-full bg-black/70 backdrop-blur-md border border-white/20 text-white text-[10px] font-semibold flex items-center gap-1">
-                          <Rotate3d size={11} className="text-cyan-400" />
-                          <span>AR Platos</span>
+                        <span className="badge-minimal text-[10px]">
+                          <Box size={11} />
+                          <span>AR</span>
                         </span>
                       )}
                     </div>
 
                     {/* Rango de precio */}
-                    <div className="absolute bottom-3 right-3 text-white text-xs font-bold font-mono tracking-wider drop-shadow">
+                    <div className="absolute bottom-3 right-3 badge-minimal text-[10px] font-mono">
                       {biz.priceRange}
                     </div>
                   </div>
@@ -353,26 +346,26 @@ export default function Home() {
                   <div className="p-5 flex-1 flex flex-col justify-between">
                     <div>
                       <div className="flex items-start justify-between gap-2 mb-1">
-                        <h3 className="text-lg font-bold text-white tracking-tight group-hover:text-amber-300 transition-colors">
+                        <h3 className="text-lg font-bold text-black tracking-tight group-hover:text-neutral-700 transition-colors">
                           {biz.name}
                         </h3>
                       </div>
 
-                      <div className="flex items-center gap-1.5 text-xs text-slate-400 mb-2.5">
-                        <MapPin size={13} className="text-amber-400 shrink-0" />
-                        <span className="font-medium text-slate-300">{biz.zone}</span>
+                      <div className="flex items-center gap-1.5 text-xs text-neutral-500 mb-2.5">
+                        <MapPin size={13} className="text-neutral-400 shrink-0" />
+                        <span className="font-semibold text-neutral-800">{biz.zone}</span>
                         <span>·</span>
                         <span>{biz.cuisine}</span>
                       </div>
 
-                      <p className="text-xs text-slate-400 line-clamp-2 leading-relaxed mb-4">
+                      <p className="text-xs text-neutral-600 line-clamp-2 leading-relaxed mb-4">
                         {biz.shortDesc}
                       </p>
 
-                      {/* Beneficio VIP / Perk */}
+                      {/* Beneficio de Estatus */}
                       {biz.perks && biz.perks[0] && (
-                        <div className="p-2.5 rounded-xl bg-amber-400/10 border border-amber-400/20 mb-4 flex items-center gap-2 text-xs text-amber-200">
-                          <span className="text-sm">👑</span>
+                        <div className="p-2.5 rounded-xl bg-neutral-50 border border-black/5 mb-4 flex items-center gap-2 text-xs text-neutral-800">
+                          <span className="text-neutral-400 font-bold">•</span>
                           <span className="text-[11px] font-medium leading-tight">
                             {biz.perks[0]}
                           </span>
@@ -381,14 +374,14 @@ export default function Home() {
                     </div>
 
                     {/* Botón de Acción Principal */}
-                    <div className="pt-2 border-t border-white/10 flex items-center justify-between gap-3">
-                      <div className="text-[11px] text-slate-400">
+                    <div className="pt-3 border-t border-black/10 flex items-center justify-between gap-3">
+                      <div className="text-[11px] text-neutral-400">
                         {biz.schedule.split('·')[0]}
                       </div>
 
                       <Link
                         href={`/lugar/${biz.id}`}
-                        className="btn-gold text-xs py-2 px-4 inline-flex items-center gap-1.5 font-bold"
+                        className="btn-solid text-xs py-2 px-4 inline-flex items-center gap-1 font-semibold"
                       >
                         <span>Reservar Mesa</span>
                         <ChevronRight size={14} />
@@ -401,10 +394,9 @@ export default function Home() {
           )}
 
           {filteredBizs.length === 0 && (
-            <div className="luxury-card p-12 text-center my-8">
-              <div className="text-4xl mb-3">🔍</div>
-              <h3 className="text-base font-bold text-white mb-1">No encontramos resultados</h3>
-              <p className="text-xs text-slate-400 mb-4">
+            <div className="liquid-glass-card p-12 text-center my-8 bg-white">
+              <h3 className="text-base font-bold text-black mb-1">No encontramos resultados</h3>
+              <p className="text-xs text-neutral-500 mb-4">
                 Prueba ajustando los filtros o buscando con otro término.
               </p>
               <button
@@ -423,7 +415,7 @@ export default function Home() {
         </main>
       )}
 
-      {/* Dock de Navegación Inferior Fijo */}
+      {/* Dock de Navegación Inferior Fijo en Liquid Glass */}
       <BottomNav
         activeTab={navTab}
         onChangeTab={(t) => setNavTab(t)}

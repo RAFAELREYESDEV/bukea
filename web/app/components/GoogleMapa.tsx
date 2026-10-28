@@ -5,18 +5,18 @@ import { loadGmaps } from './gmapsLoader';
 
 type Biz = { id: string; name: string; lat: number | null; lng: number | null };
 
-const DARK_MAP_STYLE = [
-  { elementType: 'geometry', stylers: [{ color: '#0f1118' }] },
-  { elementType: 'labels.text.stroke', stylers: [{ color: '#0f1118' }] },
-  { elementType: 'labels.text.fill', stylers: [{ color: '#94a3b8' }] },
-  { featureType: 'water', elementType: 'geometry', stylers: [{ color: '#07080b' }] },
-  { featureType: 'water', elementType: 'labels.text.fill', stylers: [{ color: '#475569' }] },
-  { featureType: 'road', elementType: 'geometry', stylers: [{ color: '#1e2433' }] },
-  { featureType: 'road', elementType: 'geometry.stroke', stylers: [{ color: '#151924' }] },
-  { featureType: 'road', elementType: 'labels.text.fill', stylers: [{ color: '#cbd5e1' }] },
-  { featureType: 'poi', elementType: 'geometry', stylers: [{ color: '#161924' }] },
-  { featureType: 'poi', elementType: 'labels.text.fill', stylers: [{ color: '#64748b' }] },
-  { featureType: 'transit', elementType: 'geometry', stylers: [{ color: '#1a1f2c' }] },
+const LIGHT_MINIMAL_MAP_STYLE = [
+  { elementType: 'geometry', stylers: [{ color: '#f5f5f7' }] },
+  { elementType: 'labels.icon', stylers: [{ visibility: 'off' }] },
+  { elementType: 'labels.text.fill', stylers: [{ color: '#525252' }] },
+  { elementType: 'labels.text.stroke', stylers: [{ color: '#ffffff' }] },
+  { featureType: 'administrative', elementType: 'geometry', stylers: [{ visibility: 'off' }] },
+  { featureType: 'poi', stylers: [{ visibility: 'off' }] },
+  { featureType: 'road', elementType: 'geometry', stylers: [{ color: '#ffffff' }] },
+  { featureType: 'road', elementType: 'geometry.stroke', stylers: [{ color: '#e5e5e5' }] },
+  { featureType: 'road', elementType: 'labels.text.fill', stylers: [{ color: '#737373' }] },
+  { featureType: 'water', elementType: 'geometry', stylers: [{ color: '#e0e7ee' }] },
+  { featureType: 'water', elementType: 'labels.text.fill', stylers: [{ color: '#94a3b8' }] },
 ];
 
 export default function GoogleMapa({ bizs, onPick }: { bizs: Biz[]; onPick?: (id: string) => void }) {
@@ -35,7 +35,7 @@ export default function GoogleMapa({ bizs, onPick }: { bizs: Biz[]; onPick?: (id
         disableDefaultUI: false,
         mapTypeControl: false,
         streetViewControl: false,
-        styles: DARK_MAP_STYLE,
+        styles: LIGHT_MINIMAL_MAP_STYLE,
       });
 
       mapRef.current = map;
@@ -53,11 +53,11 @@ export default function GoogleMapa({ bizs, onPick }: { bizs: Biz[]; onPick?: (id
           title: b.name,
           icon: {
             path: (window as any).google.maps.SymbolPath.CIRCLE,
-            fillColor: '#D4AF37',
+            fillColor: '#0A0A0A',
             fillOpacity: 1,
             strokeColor: '#FFFFFF',
-            strokeWeight: 2,
-            scale: 8,
+            strokeWeight: 2.5,
+            scale: 7,
           },
         });
 
@@ -78,7 +78,7 @@ export default function GoogleMapa({ bizs, onPick }: { bizs: Biz[]; onPick?: (id
   return (
     <div
       ref={ref}
-      className="w-full h-80 rounded-3xl overflow-hidden bg-neutral-900 border border-white/10"
+      className="w-full h-80 rounded-3xl overflow-hidden bg-neutral-100 border border-black/10"
     />
   );
 }

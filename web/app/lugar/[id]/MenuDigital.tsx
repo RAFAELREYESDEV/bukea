@@ -124,39 +124,39 @@ export default function MenuDigital() {
             key={c}
             data-active={cat === c}
             onClick={() => setCat(c)}
-            className="category-chip text-xs"
+            className="chip-minimal text-xs"
           >
             {c}
           </button>
         ))}
       </div>
 
-      {/* Lista de platos en tarjeta luxury */}
-      <div className="luxury-card divide-y divide-white/5 overflow-hidden">
+      {/* Lista de platos en tarjeta minimalista blanca */}
+      <div className="liquid-glass-card bg-white divide-y divide-black/5 overflow-hidden">
         {shown.map((d, i) => (
           <div
             key={i}
             onClick={() => setOpen(d)}
-            className="p-4 flex gap-4 items-center hover:bg-white/5 transition-colors cursor-pointer group"
+            className="p-4 flex gap-4 items-center hover:bg-neutral-50 transition-colors cursor-pointer group"
           >
             <img
               src={d.photo}
               alt={d.name}
-              className="w-16 h-16 rounded-2xl object-cover shrink-0 border border-white/10 group-hover:scale-105 transition-transform"
+              className="w-16 h-16 rounded-2xl object-cover shrink-0 border border-black/10 group-hover:scale-105 transition-transform"
             />
             <div className="flex-1 min-w-0">
               <div className="flex items-center justify-between gap-2">
-                <div className="font-bold text-sm text-white group-hover:text-amber-300 truncate">
+                <div className="font-semibold text-sm text-black group-hover:text-neutral-700 truncate">
                   {d.name}
                 </div>
-                <div className="font-mono font-extrabold text-sm text-amber-400">
+                <div className="font-mono font-bold text-sm text-black">
                   {d.price}
                 </div>
               </div>
-              <div className="text-xs text-slate-400 line-clamp-1 mt-0.5">
+              <div className="text-xs text-neutral-600 line-clamp-1 mt-0.5">
                 {d.desc}
               </div>
-              <div className="text-[11px] text-slate-500 truncate mt-1">
+              <div className="text-[11px] text-neutral-400 truncate mt-1">
                 {d.ing.slice(0, 3).join(' · ')}
               </div>
             </div>
@@ -168,15 +168,15 @@ export default function MenuDigital() {
       {open && (
         <div
           onClick={() => setOpen(null)}
-          className="fixed inset-0 bg-black/80 backdrop-blur-md z-50 flex items-end justify-center sm:items-center p-0 sm:p-4 animate-in fade-in"
+          className="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-end justify-center sm:items-center p-0 sm:p-4 animate-in fade-in"
         >
           <div
             onClick={(e) => e.stopPropagation()}
-            className="w-full max-w-lg bg-[#0e1017] border border-amber-400/30 rounded-t-3xl sm:rounded-3xl p-6 shadow-2xl animate-in slide-in-from-bottom-5 text-white"
+            className="w-full max-w-lg bg-white border border-black/10 rounded-t-3xl sm:rounded-3xl p-6 shadow-2xl animate-in slide-in-from-bottom-5 text-black"
           >
-            <div className="w-12 h-1 rounded-full bg-white/20 mx-auto mb-4 sm:hidden" />
+            <div className="w-12 h-1 rounded-full bg-neutral-200 mx-auto mb-4 sm:hidden" />
 
-            <div className="relative aspect-[16/10] rounded-2xl overflow-hidden mb-4 border border-white/10">
+            <div className="relative aspect-[16/10] rounded-2xl overflow-hidden mb-4 border border-black/10">
               <img
                 src={open.photo}
                 alt={open.name}
@@ -184,27 +184,27 @@ export default function MenuDigital() {
               />
               <button
                 onClick={() => setOpen(null)}
-                className="absolute top-3 right-3 w-8 h-8 rounded-full bg-black/70 text-white flex items-center justify-center border border-white/20"
+                className="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/80 text-black flex items-center justify-center border border-black/10 shadow-sm"
               >
                 <X size={16} />
               </button>
             </div>
 
             <div className="flex items-start justify-between gap-3 mb-2">
-              <h3 className="text-lg font-bold font-display text-white">{open.name}</h3>
-              <span className="text-lg font-mono font-extrabold text-amber-400">{open.price}</span>
+              <h3 className="text-lg font-bold text-black">{open.name}</h3>
+              <span className="text-lg font-mono font-bold text-black">{open.price}</span>
             </div>
 
-            <p className="text-xs text-slate-300 leading-relaxed mb-4">{open.desc}</p>
+            <p className="text-xs text-neutral-600 leading-relaxed mb-4">{open.desc}</p>
 
-            <div className="text-[11px] font-bold text-amber-300 uppercase tracking-wider mb-2">
+            <div className="text-[11px] font-bold text-black uppercase tracking-wider mb-2">
               Ingredientes & Preparación
             </div>
             <div className="flex flex-wrap gap-1.5 mb-6">
               {open.ing.map((item, idx) => (
                 <span
                   key={idx}
-                  className="px-2.5 py-1 rounded-lg bg-white/5 border border-white/10 text-slate-300 text-xs"
+                  className="px-2.5 py-1 rounded-lg bg-neutral-100 border border-black/5 text-neutral-700 text-xs"
                 >
                   {item}
                 </span>
@@ -213,7 +213,7 @@ export default function MenuDigital() {
 
             <button
               onClick={() => setOpen(null)}
-              className="btn-gold w-full text-xs py-3"
+              className="btn-solid w-full text-xs py-3 justify-center"
             >
               Cerrar Detalle
             </button>

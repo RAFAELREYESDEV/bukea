@@ -1,16 +1,15 @@
 import './globals.css';
-import { GeistSans } from 'geist/font/sans';
 import Script from 'next/script';
 import type { Metadata, Viewport } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Bookealo — Reservas de Estatus & Inmersión Espacial 360°',
-  description: 'Ecosistema de reservas exclusivas, menús en Realidad Aumentada y pases VIP para los mejores restaurantes, clubes y posadas de Margarita.',
+  title: 'Bukea — Reserva con estatus',
+  description: 'Reservas exclusivas, inmersión 360°, menús en Realidad Aumentada y pases digitales para comensales en Margarita.',
   manifest: '/manifest.webmanifest',
 };
 
 export const viewport: Viewport = {
-  themeColor: '#07080b',
+  themeColor: '#FFFFFF',
   width: 'device-width',
   initialScale: 1,
   maximumScale: 1,
@@ -20,8 +19,8 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="es" className={GeistSans.className}>
-      <body className="antialiased bg-[#07080b] text-slate-100 min-h-screen">
+    <html lang="es">
+      <body className="antialiased bg-white text-[#0A0A0A] min-h-screen font-text selection:bg-neutral-900 selection:text-white">
         {children}
         <Script
           type="module"
