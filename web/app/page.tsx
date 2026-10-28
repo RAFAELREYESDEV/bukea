@@ -14,6 +14,10 @@ import {
   Box, 
   ArrowRight, 
   ChevronRight,
+  ChevronDown,
+  Navigation,
+  Check,
+  X,
   UtensilsCrossed,
   SunMedium,
   Building2,
@@ -42,6 +46,13 @@ const CATEGORIES = [
   { id: 'Terraza', label: 'Terrazas', icon: Wine },
 ];
 
+const DESTINATIONS = [
+  { id: 'Margarita', label: 'Margarita', desc: 'Pampatar, Playa El Agua, Porlamar', available: true },
+  { id: 'Caracas', label: 'Caracas', desc: 'Las Mercedes, Altamira, El Hatillo', available: true },
+  { id: 'Lechería', label: 'Lechería', desc: 'El Morro, Plaza Mayor', available: false },
+  { id: 'Los Roques', label: 'Los Roques', desc: 'Gran Roque, Playas VIP', available: false },
+];
+
 export default function Home() {
   const [bizs, setBizs] = useState<Business[]>(BUSINESSES_MOCK);
   const [cat, setCat] = useState('Todos');
@@ -51,7 +62,69 @@ export default function Home() {
   const [navTab, setNavTab] = useState<NavTab>('explorar');
   const [reservations, setReservations] = useState<StoredReservation[]>([]);
   const [selectedMapBiz, setSelectedMapBiz] = useState<Business | null>(null);
+  const [currentLocation, setCurrentLocation] = useState('Margarita');
+  const [locationModalOpen, setLocationModalOpen] = useState(false);
+  const [isDetectingLocation, setIsDetectingLocation] = useState(false);
+  const [locationNotice, setLocationNotice] = useState<string | null>(null);
   const router = useRouter();
+
+  // Carga de ubicación guardada
+  useEffect(() => {
+    try {
+      const savedLoc = localStorage.getItem('bukea_user_location');
+      if (savedLoc) {
+        setCurrentLocation(savedLoc);
+      }
+    } catch {
+      // Ignorar
+    }
+  }, []);
+
+  const handleSelectLocation = (loc: string) => {
+    setCurrentLocation(loc);
+    try {
+      localStorage.setItem('bukea_user_location', loc);
+    } catch {
+      // Ignorar
+    }
+    setTimeout(() => {
+      setLocationModalOpen(false);
+      setLocationNotice(null);
+    }, 200);
+  };
+
+  const detectLocation = () => {
+    if (typeof window === 'undefined' || !navigator.geolocation) {
+      setLocationNotice('Geolocalización no soportada en este navegador.');
+      return;
+    }
+    setIsDetectingLocation(true);
+    setLocationNotice('Detectando tu ubicación por GPS…');
+
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        setIsDetectingLocation(false);
+        const { latitude, longitude } = pos.coords;
+        // Isla de Margarita (~10.8° a 11.2° N, -64.4° a -63.7° W)
+        if (latitude >= 10.7 && latitude <= 11.3 && longitude >= -64.6 && longitude <= -63.6) {
+          handleSelectLocation('Margarita');
+          setLocationNotice('¡Ubicación detectada: Isla de Margarita!');
+        } else if (latitude >= 10.2 && latitude <= 10.6 && longitude >= -67.2 && longitude <= -66.6) {
+          handleSelectLocation('Caracas');
+          setLocationNotice('¡Ubicación detectada: Caracas!');
+        } else {
+          // Destino por defecto
+          handleSelectLocation('Margarita');
+          setLocationNotice('Detectamos tu región. Mostrando exclusividades en Margarita.');
+        }
+      },
+      () => {
+        setIsDetectingLocation(false);
+        setLocationNotice('No se pudo acceder al GPS. Selecciona tu ciudad manualmente.');
+      },
+      { timeout: 8000 }
+    );
+  };
 
   // Carga de reservas persistentes
   useEffect(() => {
@@ -107,9 +180,17 @@ export default function Home() {
             <span className="font-logo text-4xl text-black leading-none pt-1">
               Bukea
             </span>
-            <span className="text-[10px] uppercase tracking-[0.18em] text-neutral-400 font-semibold font-text border-l border-black/15 pl-3">
-              Margarita
-            </span>
+            <button
+              onClick={() => setLocationModalOpen(true)}
+              className="flex items-center gap-1.5 px-2.5 py-1 rounded-full hover:bg-neutral-100 transition-colors border-l border-black/15 pl-3 cursor-pointer group"
+              title="Cambiar destino o ubicación"
+            >
+              <MapPin size={11} className="text-neutral-500 group-hover:text-black transition-colors" />
+              <span className="text-[10px] uppercase tracking-[0.18em] text-neutral-600 group-hover:text-black font-semibold font-text">
+                {currentLocation}
+              </span>
+              <ChevronDown size={11} className="text-neutral-400 group-hover:text-black transition-transform group-hover:translate-y-0.5" />
+            </button>
           </div>
 
           <div className="flex items-center gap-2">
@@ -413,6 +494,125 @@ export default function Home() {
             </div>
           )}
         </main>
+      )}
+
+      {/* Modal Selector de Destino / Ubicación */}
+      {locationModalOpen && (
+        <div
+          onClick={() => setLocationModalOpen(false)}
+          className="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 animate-in fade-in"
+        >
+          <div
+            onClick={(e) => e.stopPropagation()}
+            className="w-full max-w-md bg-white border border-black/10 rounded-t-3xl sm:rounded-3xl p-6 shadow-2xl animate-in slide-in-from-bottom-4"
+          >
+            <div className="w-12 h-1 rounded-full bg-neutral-200 mx-auto mb-4 sm:hidden" />
+
+            <div className="flex items-center justify-between mb-4">
+              <div>
+                <h3 className="font-semibold text-base text-black">Selecciona tu Destino</h3>
+                <p className="text-xs text-neutral-500">Explora locales y experiencias en tu zona</p>
+              </div>
+              <button
+                onClick={() => setLocationModalOpen(false)}
+                className="w-8 h-8 rounded-full bg-neutral-100 flex items-center justify-center text-neutral-600 hover:text-black transition-colors"
+              >
+                <X size={16} />
+              </button>
+            </div>
+
+            {/* Botón de Geodetección */}
+            <button
+              onClick={detectLocation}
+              disabled={isDetectingLocation}
+              className="w-full mb-4 p-3.5 rounded-2xl bg-neutral-50 border border-black/10 hover:bg-neutral-100 flex items-center justify-between text-left transition-colors cursor-pointer group"
+            >
+              <div className="flex items-center gap-3">
+                <div className="w-9 h-9 rounded-xl bg-black text-white flex items-center justify-center shrink-0">
+                  <Navigation size={16} className={isDetectingLocation ? 'animate-spin' : ''} />
+                </div>
+                <div>
+                  <div className="text-xs font-semibold text-black group-hover:underline">
+                    {isDetectingLocation ? 'Detectando señal GPS…' : 'Usar mi ubicación actual'}
+                  </div>
+                  <div className="text-[11px] text-neutral-500">
+                    Sincroniza automáticamente los locales más cercanos
+                  </div>
+                </div>
+              </div>
+            </button>
+
+            {locationNotice && (
+              <div className="mb-4 p-2.5 rounded-xl bg-neutral-100 border border-black/5 text-[11px] text-neutral-700 text-center animate-in fade-in">
+                {locationNotice}
+              </div>
+            )}
+
+            {/* Lista de Destinos Disponibles */}
+            <div className="space-y-2 mb-4">
+              <div className="text-[10px] uppercase tracking-wider font-semibold text-neutral-400 px-1">
+                Destinos BUKEA
+              </div>
+              {DESTINATIONS.map((dest) => {
+                const isSelected = currentLocation.toLowerCase() === dest.label.toLowerCase();
+                return (
+                  <button
+                    key={dest.id}
+                    onClick={() => handleSelectLocation(dest.label)}
+                    className={`w-full p-3 rounded-2xl border text-left flex items-center justify-between transition-all cursor-pointer ${
+                      isSelected
+                        ? 'bg-neutral-900 text-white border-neutral-900 shadow-sm'
+                        : 'bg-white hover:bg-neutral-50 text-black border-black/10'
+                    }`}
+                  >
+                    <div className="flex items-center gap-3">
+                      <div
+                        className={`w-8 h-8 rounded-xl flex items-center justify-center text-xs ${
+                          isSelected ? 'bg-white/10 text-white' : 'bg-neutral-100 text-neutral-700'
+                        }`}
+                      >
+                        <MapPin size={14} />
+                      </div>
+                      <div>
+                        <div className="text-xs font-semibold flex items-center gap-2">
+                          <span>{dest.label}</span>
+                          {!dest.available && (
+                            <span
+                              className={`text-[9px] px-1.5 py-0.5 rounded-full font-medium ${
+                                isSelected
+                                  ? 'bg-white/20 text-white'
+                                  : 'bg-neutral-100 text-neutral-500'
+                              }`}
+                            >
+                              Próximamente
+                            </span>
+                          )}
+                        </div>
+                        <div
+                          className={`text-[11px] ${
+                            isSelected ? 'text-neutral-300' : 'text-neutral-500'
+                          }`}
+                        >
+                          {dest.desc}
+                        </div>
+                      </div>
+                    </div>
+
+                    {isSelected && (
+                      <div className="w-6 h-6 rounded-full bg-white text-black flex items-center justify-center">
+                        <Check size={13} strokeWidth={3} />
+                      </div>
+                    )}
+                  </button>
+                );
+              })}
+            </div>
+
+            <div className="text-[11px] text-neutral-400 text-center">
+              Tu selección se mantendrá guardada para tus próximas reservas.
+            </div>
+          </div>
+        </div>
       )}
 
       {/* Dock de Navegación Inferior Fijo en Liquid Glass */}
