@@ -19,7 +19,7 @@ import {
   Flame,
   CheckCircle2
 } from 'lucide-react';
-import { Business, BUSINESSES_MOCK, StoredReservation } from './data/businesses';
+import { Business, BUSINESSES_MOCK, StoredReservation, normalizeBusiness } from './data/businesses';
 import BottomNav, { NavTab } from './components/BottomNav';
 import WalletView from './components/WalletView';
 import ReservasView from './components/ReservasView';
@@ -59,19 +59,15 @@ export default function Home() {
     }
   }, []);
 
-  // Intentar cargar datos de la API Fastify de Rol 3 (con fallback automático a datos semilla)
+  // Intentar cargar datos de la API Fastify de Rol 3 (con fallback y normalización)
   useEffect(() => {
     fetch('/api/web/businesses')
       .then((r) => r.json())
       .then((d) => {
         const fetched = d.businesses || d.items || d;
         if (Array.isArray(fetched) && fetched.length > 0) {
-          // Combinar campos ricos con lo retornado por la API
-          const merged = fetched.map((item: any) => {
-            const foundMock = BUSINESSES_MOCK.find(m => m.id === item.id || m.slug === item.slug);
-            return foundMock ? { ...foundMock, ...item } : item;
-          });
-          setBizs(merged);
+          const normalized = fetched.map((item: any) => normalizeBusiness(item));
+          setBizs(normalized);
         }
       })
       .catch(() => {
@@ -276,8 +272,8 @@ export default function Home() {
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-1 text-xs text-amber-400 font-bold">
                       <Star size={13} fill="currentColor" />
-                      <span>{selectedMapBiz.rating}</span>
-                      <span className="text-slate-400 font-normal">({selectedMapBiz.reviewCount})</span>
+                      <span>{(selectedMapBiz.rating ?? 4.8).toFixed(1)}</span>
+                      <span className="text-slate-400 font-normal">({selectedMapBiz.reviewCount ?? 84})</span>
                     </div>
                     <div className="font-bold text-white text-base truncate mt-0.5">{selectedMapBiz.name}</div>
                     <div className="text-xs text-slate-400 truncate">{selectedMapBiz.cuisine} · {selectedMapBiz.zone}</div>
@@ -327,8 +323,8 @@ export default function Home() {
                     {/* Badge Superior Derecho: Rating */}
                     <div className="absolute top-3 right-3 badge-dark text-amber-300 font-bold text-xs flex items-center gap-1 shadow-md">
                       <Star size={12} fill="currentColor" className="text-amber-400" />
-                      <span>{biz.rating.toFixed(1)}</span>
-                      <span className="text-slate-400 text-[10px] font-normal">({biz.reviewCount})</span>
+                      <span>{(biz.rating ?? 4.8).toFixed(1)}</span>
+                      <span className="text-slate-400 text-[10px] font-normal">({biz.reviewCount ?? 84})</span>
                     </div>
 
                     {/* Inmersión Tags (Inferior Izquierda sobre imagen) */}

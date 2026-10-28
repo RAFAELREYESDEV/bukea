@@ -297,3 +297,112 @@ export interface StoredReservation {
   createdAt: string;
   perks: string[];
 }
+
+
+export function normalizeBusiness(raw: any): Business {
+  if (!raw) return BUSINESSES_MOCK[0];
+
+  const foundMock = BUSINESSES_MOCK.find(
+    (m) =>
+      m.id === raw.id ||
+      m.slug === raw.slug ||
+      m.name.toLowerCase() === (raw.name || '').toLowerCase()
+  );
+
+  // Capitalizar y mapear categoría
+  let cat = raw.category || (foundMock?.category ?? 'Restaurante');
+  const catLower = String(cat).toLowerCase();
+  if (catLower.includes('club')) cat = 'Club';
+  else if (catLower.includes('posada') || catLower.includes('hotel')) cat = 'Posada';
+  else if (catLower.includes('terraza') || catLower.includes('roof')) cat = 'Terraza';
+  else cat = 'Restaurante';
+
+  const cuisine = raw.cuisine || foundMock?.cuisine || 'Cocina de Autor';
+  const name = raw.name || foundMock?.name || 'Restaurante Aliado';
+
+  // Asignar imagen acorde al tipo de gastronomía si no tiene heroImage
+  let heroImage = raw.heroImage || foundMock?.heroImage;
+  if (!heroImage) {
+    const cLower = cuisine.toLowerCase();
+    if (cLower.includes('nikkei') || cLower.includes('japones') || cLower.includes('sushi')) {
+      heroImage = 'https://images.unsplash.com/photo-1579871494447-9811cf80d66c?auto=format&fit=crop&w=1200&q=80';
+    } else if (cLower.includes('itali')) {
+      heroImage = 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=1200&q=80';
+    } else if (cLower.includes('mexic')) {
+      heroImage = 'https://images.unsplash.com/photo-1565299585323-38d6b0865b47?auto=format&fit=crop&w=1200&q=80';
+    } else if (cLower.includes('árabe') || cLower.includes('arabe') || cLower.includes('liban')) {
+      heroImage = 'https://images.unsplash.com/photo-1541544741938-0af808871cc0?auto=format&fit=crop&w=1200&q=80';
+    } else if (cLower.includes('parrilla') || cLower.includes('carne') || cLower.includes('mar y tierra')) {
+      heroImage = 'https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=1200&q=80';
+    } else if (cLower.includes('lounge') || cLower.includes('roof') || cLower.includes('coctel')) {
+      heroImage = 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1200&q=80';
+    } else {
+      heroImage = 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1200&q=80';
+    }
+  }
+
+  const rating =
+    typeof raw.rating === 'number' && !isNaN(raw.rating)
+      ? raw.rating
+      : foundMock?.rating ?? 4.8;
+
+  const reviewCount =
+    typeof raw.reviewCount === 'number' && !isNaN(raw.reviewCount)
+      ? raw.reviewCount
+      : foundMock?.reviewCount ?? 84;
+
+  const carousel =
+    Array.isArray(raw.carousel) && raw.carousel.length > 0
+      ? raw.carousel
+      : foundMock?.carousel ?? [
+          { src: heroImage, cap: `${name} · Experiencia Gastronómica` },
+        ];
+
+  let scheduleStr = 'Mar - Dom · 12:00 PM - 10:00 PM';
+  if (typeof raw.schedule === 'string') {
+    scheduleStr = raw.schedule;
+  } else if (foundMock?.schedule) {
+    scheduleStr = foundMock.schedule;
+  }
+
+  return {
+    id: String(raw.id || foundMock?.id || Math.random().toString(36).slice(2)),
+    name,
+    slug: raw.slug || foundMock?.slug || (raw.id ? String(raw.id) : 'restaurante'),
+    category: cat as any,
+    cuisine,
+    tier: raw.tier || foundMock?.tier || 2,
+    rating,
+    reviewCount,
+    priceRange: raw.priceRange || foundMock?.priceRange || '$$$',
+    address: raw.address || foundMock?.address || 'Isla de Margarita, Nueva Esparta',
+    zone: raw.zone || foundMock?.zone || raw.address || 'Margarita',
+    lat: typeof raw.lat === 'number' ? raw.lat : foundMock?.lat ?? 10.99,
+    lng: typeof raw.lng === 'number' ? raw.lng : foundMock?.lng ?? -63.81,
+    whatsapp: raw.whatsapp || foundMock?.whatsapp || '584129999999',
+    phone: raw.phone || foundMock?.phone || '+58 412 999 9999',
+    description:
+      raw.description ||
+      foundMock?.description ||
+      `${name} ofrece una propuesta gastronómica excepcional en Margarita con servicio preferencial.`,
+    shortDesc:
+      raw.shortDesc ||
+      foundMock?.shortDesc ||
+      `${cuisine} en ${raw.address || 'Margarita'}.`,
+    heroImage,
+    carousel,
+    tour_360: raw.tour_360 ?? foundMock?.tour_360 ?? null,
+    hasAR: raw.hasAR ?? foundMock?.hasAR ?? false,
+    featuredBadge: raw.featuredBadge || foundMock?.featuredBadge,
+    promos: raw.promos || foundMock?.promos || [],
+    dishes: raw.dishes || foundMock?.dishes || [],
+    reviews: raw.reviews || foundMock?.reviews || [],
+    schedule: scheduleStr,
+    perks:
+      raw.perks ||
+      foundMock?.perks || [
+        'Atención preferencial Bookealo',
+        'Mesa confirmada al instante',
+      ],
+  };
+}

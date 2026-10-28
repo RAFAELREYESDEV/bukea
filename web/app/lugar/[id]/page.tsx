@@ -21,7 +21,7 @@ import {
   ShieldCheck,
   Award
 } from 'lucide-react';
-import { Business, BUSINESSES_MOCK, StoredReservation, Dish } from '../../data/businesses';
+import { Business, BUSINESSES_MOCK, StoredReservation, Dish, normalizeBusiness } from '../../data/businesses';
 import MapaGoogle from './MapaGoogle';
 import ReviewsList from './ReviewsList';
 import CarruselFotos from './CarruselFotos';
@@ -73,7 +73,7 @@ export default function LugarPage() {
       .then(d => {
         const fetched = d.business || d;
         if (fetched && fetched.name) {
-          setB(prev => (prev ? { ...prev, ...fetched } : fetched));
+          setB(normalizeBusiness(fetched));
         }
       })
       .catch(() => {});
@@ -253,10 +253,10 @@ export default function LugarPage() {
             <div className="text-right shrink-0">
               <div className="flex items-center justify-end gap-1 text-amber-400 font-bold text-base">
                 <Star size={16} fill="currentColor" />
-                <span>{b.rating.toFixed(1)}</span>
+                <span>{(b.rating ?? 4.8).toFixed(1)}</span>
               </div>
               <div className="text-[11px] text-slate-400 mt-0.5">
-                {b.reviewCount} opiniones
+                {b.reviewCount ?? 84} opiniones
               </div>
             </div>
           </div>
