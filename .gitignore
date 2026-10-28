@@ -1,0 +1,33 @@
+# Dependencias
+node_modules/
+.pnp
+.pnp.js
+
+# Entornos virtuales & Python
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+.env
+.env.local
+.env.*.local
+
+# Builds & Outputs
+dist/
+build/
+.output/
+.wrangler/
+.next/
+out/
+
+# Logs & temporales
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.DS_Store
+Thumbs.db
+*.log
+
+# IDEs
+.vscode/
+.idea/
