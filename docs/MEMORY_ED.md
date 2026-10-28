@@ -1,0 +1,120 @@
+# MEMORY ED — PROYECTO BUKEA
+
+> **Proyecto:** BUKEA (Ecosistema Digital de Reservas de Estatus, Inmersión Espacial 360°, Menús AR, Chips NFC y Suite POS/KDS)  
+> **Usuario / Lead:** Ed (Metro Virtual Tours)  
+> **Rol Asignado:** Rol 4 — Frontend User & QA Specialist  
+> **Rama Oficial:** `feat/rol4-user-ui` (REGLA: NUNCA push directo a `main`)  
+> **Repositorio GitHub:** [https://github.com/RAFAELREYESDEV/bukea.git](https://github.com/RAFAELREYESDEV/bukea.git)  
+> **Producción Cloudflare:** [https://bukea.inkbytecorpore.workers.dev](https://bukea.inkbytecorpore.workers.dev)  
+> **Notion Maestro:** [Bookea o Bookealo](https://leaf-ceder-624.notion.site/Bookea-o-Bookealo-3f4d9083836280f699d9d6fb243f6819)
+
+---
+
+## 1. REGLAS DE ORO DE DISEÑO & IDENTIDAD VISUAL
+
+1. **Nombre de Marca:**
+   - **BUKEA** (en mayúsculas o capitalizado Bukea). Se descartó formalmente el nombre anterior *Bookealo* o *Bookea*.
+2. **Tema Blanco Puro (Light Mode):**
+   - Fondo blanco y neutros muy suaves (`#ffffff`, `#fbfbfb`, `#f8f9fa`).
+   - Textos con contraste en negro sólido y grises oscuros (`#0A0A0A`, `#171717`, `#404040`, `#737373`).
+   - Cero temas oscuros de fondo negro/dorado.
+3. **Cero Degradados / Gradients:**
+   - Prohibidos los gradientes de color o efectos metálicos dorados.
+   - Uso exclusivo de **Liquid Glass / Glassmorphism**: fondos translúcidos, `backdrop-blur-md`, bordes finos `border-black/10` y sombras difusas de alta gama.
+4. **Cero Emojis:**
+   - Ningún emoji en títulos, botones, badges ni descripciones.
+   - Uso 100% de iconografía vectorial minimalista con `lucide-react`.
+5. **Badges Minimalistas:**
+   - Insignias sobrias, discretas y limpias, evitando el aspecto artificial o sobrecargado típico de plantillas de IA.
+6. **Sistema Tipográfico Oficial:**
+   - **LOGO:** `Story Script` (cursiva de autor con personalidad).
+   - **TEXTO & UI:** `Barlow` (sans-serif moderna, geométrica y de máxima legibilidad móvil).
+   - **ACENTO / ÉNFASIS:** `Cormorant Garamond` (serif editorial para remates de títulos y frases de estatus).
+
+---
+
+## 2. ARQUITECTURA DE PANTALLAS (FRONTEND USER)
+
+### A. Página Principal (`web/app/page.tsx`)
+- **Header Liquid Glass:**
+  - Logo `Bukea` en tipografía Story Script.
+  - **Selector Dinámico de Ubicación / Destino:**
+    - Botón interactivo con icono `MapPin`, destino actual y flecha `ChevronDown`.
+    - Al pulsar, abre modal de selección con geodetección GPS (`navigator.geolocation`).
+    - Destinos: **Margarita** (*Pampatar, Playa El Agua, Porlamar*), **Caracas** (*Las Mercedes, Altamira, El Hatillo*), **Lechería** y **Los Roques**.
+    - Persistencia en `localStorage` (`bukea_user_location`).
+  - Acceso directo a *Pase Digital*.
+- **Hero Editorial:**
+  - Tagline: *"Reservas exclusivas, en un toque."* (con *"en un toque"* en tipografía Cormorant Garamond itálica).
+  - Subtítulo de estatus: Tours virtuales 360°, platos en Realidad Aumentada y acceso preferencial.
+- **Feed Táctil de Locales:**
+  - Buscador en tiempo real por nombre, cocina o zona.
+  - Filtros de categoría (*Todos, Beach Clubs, Posadas, Terrazas*).
+  - Filtros de tecnología (*Tours 360°* y *Platos AR*).
+  - Tarjetas de local con rating seguro, foto hero, perks de mesa y horario.
+- **Dock de Navegación Inferior (`BottomNav.tsx`):**
+  - Flotante tipo liquid glass con 4 vistas: *Explorar, Mapa interactivo, Mis Reservas* (con contador en vivo) y *Pase Digital Wallet*.
+
+### B. Detalle del Restaurante (`web/app/lugar/[id]/page.tsx`)
+- **Encabezado Gastronómico Obligatorio:**
+  - Dice obligatoriamente **"Comida [TIPO]"** (e.g. *Comida Árabe, Comida Mexicana, Comida Italiana, Comida Fusión Insular*), nunca la palabra genérica "Restaurante".
+- **Platos en Realidad Aumentada (AR):**
+  - **Siempre muestra 4 platos fijos iniciales** en rejilla.
+  - Botón expansible **"Ver más platos AR"** / **"Ver menos"** si la carta contiene más platos 3D.
+  - Modal con visor 3D interactivo `<model-viewer>` para girar en 360° o proyectar en la mesa física con WebXR.
+- **Motor de Reservas Instantáneo:**
+  - Selector de comensales (1 a 8+ personas).
+  - Selector de fecha con validación de días pasados.
+  - Franjas horarias con disponibilidad en tiempo real.
+  - Formulario de nombre y WhatsApp.
+  - Generación de código VIP (ej: `BK-89X2`) y guardado persistente en `localStorage` (`bukea_reservations`).
+- **Tour Virtual 360°:**
+  - Modal inmersivo a pantalla completa para recorrer el local antes de reservar.
+- **Menú Digital Completo (`MenuDigital.tsx`):**
+  - Secciones: *Entradas, Del Mar, Parrilla, Postres*.
+  - Bottom-sheet con detalle de ingredientes y precios.
+- **Opiniones Verificadas (`ReviewsList.tsx`):**
+  - Reseñas de comensales con distintivo de verificación.
+
+---
+
+## 3. RESILIENCIA DE DATOS Y CONEXIÓN CON BACKEND
+
+- **Capa de Normalización (`web/app/data/businesses.ts`):**
+  - Consume `/api/web/businesses` del backend Fastify (Rol 3) si está en ejecución.
+  - La función `normalizeBusiness()` complementa automáticamente imágenes temáticas de Unsplash, coordenadas de Margarita, descripciones y perks si la base de datos viene vacía o incompleta.
+  - La función `formatCuisineHeader()` asegura la regla de "Comida [TIPO]".
+  - Previene caídas por `rating.toFixed()` mediante coalescencia nula `(b.rating ?? 4.8).toFixed(1)`.
+
+---
+
+## 4. COMANDOS Y GUÍA TÉCNICA DEL ENTORNO
+
+### Servidor Local de Desarrollo
+```bash
+# Directorio del proyecto web
+cd "/Volumes/EDS 2TB SSD/Antigravity/Bukea/web"
+
+# Levantar servidor en puerto 3004 (Webpack mode sin turbopack para soportar symlinks)
+npx next dev -p 3004
+```
+URL local: **http://localhost:3004**
+
+### Flujo de Git y GitHub
+- **Cuenta autenticada:** `metroinmersion-rgb` vía GitHub CLI (`gh`).
+- **Rama:** `feat/rol4-user-ui`.
+- **Regla:** Nunca hacer push a `main`. Todo merge a `main` se realiza mediante Pull Request en GitHub.
+- **Comandos estándar:**
+  ```bash
+  git add .
+  git commit -m "feat(user-ui): <descripcion>"
+  git push origin feat/rol4-user-ui
+  ```
+
+---
+
+## 5. HISTORIAL DE COMMITS CLAVE
+
+- `279bb2b`: Maqueta blanca liquid glass BUKEA, tipografías oficiales, badges minimalistas y memoria técnica.
+- `7f5dfd6`: Selector interactivo de destino y autodetección de ubicación GPS.
+- `6f3a33b`: Precarga optimizada de fuentes en layout y directiva limpia de Tailwind v4 en globals.css.
