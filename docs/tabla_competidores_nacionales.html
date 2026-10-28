@@ -1,0 +1,195 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body {
+      background-color: #08090C;
+      color: #E2E8F0;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    .font-display { font-family: 'Space Grotesk', sans-serif; }
+    .gold-gradient {
+      background: linear-gradient(135deg, #FFFFFF 0%, #E5C158 50%, #9B7816 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .border-gold-glow {
+      box-shadow: 0 0 25px -5px rgba(212, 175, 55, 0.15);
+    }
+  </style>
+</head>
+<body class="p-8 antialiased">
+
+    <!-- CINTILLO OFICIAL DE BOOKEALO -->
+    <div class="relative overflow-hidden rounded-2xl bg-gradient-to-r from-[#12141C] via-[#0F1117] to-[#161822] border border-[#262A38] p-6 mb-8 border-gold-glow">
+      <div class="absolute -top-12 -right-12 w-56 h-56 bg-[#D4AF37]/10 rounded-full blur-3xl pointer-events-none"></div>
+      <div class="flex items-center justify-between relative z-10">
+        <div class="flex items-center gap-4">
+          <div class="w-14 h-14 rounded-2xl bg-gradient-to-tr from-[#D4AF37] via-[#F5E7B2] to-[#B38F1E] flex items-center justify-center text-black font-extrabold text-2xl font-display shadow-lg shadow-[#D4AF37]/20">
+            B
+          </div>
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="font-display font-extrabold text-2xl tracking-tight text-white">Bookealo<span class="text-[#D4AF37]">.</span></span>
+              <span class="px-2.5 py-0.5 rounded-full bg-[#D4AF37]/15 text-[#E5C158] text-[10px] font-bold tracking-wider uppercase border border-[#D4AF37]/30">
+                Inteligencia de Mercado
+              </span>
+            </div>
+            <p class="text-xs text-slate-400 mt-0.5 font-medium tracking-wide">Mapeo de Actores Locales & Oportunidades Tácticas</p>
+          </div>
+        </div>
+        <div class="text-right">
+          <div class="text-xs font-mono font-bold text-[#E5C158]">ECOSISTEMA NACIONAL (VENEZUELA)</div>
+          <div class="text-[11px] text-slate-500 mt-0.5">Ecosistema Digital de Reservas & Experiencias</div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- TABLA NACIONAL -->
+    <div class="rounded-2xl border border-[#232733] bg-[#0E1017] overflow-hidden shadow-2xl">
+      <table class="w-full text-left border-collapse">
+        <thead>
+          <tr class="bg-[#151822] border-b border-[#232733] text-[11px] uppercase tracking-wider text-slate-400 font-bold">
+            <th class="py-4 px-5">Competidor</th>
+            <th class="py-4 px-5">Enfoque & Territorio</th>
+            <th class="py-4 px-5">Propuesta Actual</th>
+            <th class="py-4 px-5">Cobro & Modelo</th>
+            <th class="py-4 px-5 text-emerald-400">Por qué Gana Bookealo</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-[#1D212C] text-xs">
+          
+          <tr class="hover:bg-[#12151E]/60 transition-colors">
+            <td class="py-4 px-5">
+              <div class="font-bold text-white text-sm">Ganga</div>
+              <div class="text-[10px] text-emerald-400 mt-0.5 font-medium">● Activa (Android + Web)</div>
+            </td>
+            <td class="py-4 px-5 text-slate-300">
+              <span class="font-medium text-white">Nacional</span>
+              <div class="text-[10px] text-slate-500 mt-0.5">Comercios urbanos</div>
+            </td>
+            <td class="py-4 px-5 text-slate-300">
+              Cuponera de descuentos canjeables en local con código QR.
+            </td>
+            <td class="py-4 px-5">
+              <span class="font-mono text-white font-semibold">$0 / $4.99 / $9.99</span>
+              <div class="text-[10px] text-slate-400 mt-0.5">Prepagado: Pago Móvil / Binance</div>
+            </td>
+            <td class="py-4 px-5 text-slate-300 bg-emerald-500/[0.02]">
+              <span class="text-emerald-400 font-semibold">Cupones $
+eq$ Reservas ni Operación.</span>
+              <div class="text-slate-400 text-[11px] mt-0.5">Ganga no gestiona mesas, no tiene StreetView/360 ni POS. Valida que el comercio paga prepago sin problema.</div>
+            </td>
+          </tr>
+
+          <tr class="hover:bg-[#12151E]/60 transition-colors">
+            <td class="py-4 px-5">
+              <div class="font-bold text-white text-sm">La Perla</div>
+              <div class="text-[10px] text-amber-400 mt-0.5 font-medium">● Web-App Turística</div>
+            </td>
+            <td class="py-4 px-5 text-slate-300">
+              <span class="font-medium text-white">Nueva Esparta</span>
+              <div class="text-[10px] text-slate-500 mt-0.5">Foco turista y cruceros</div>
+            </td>
+            <td class="py-4 px-5 text-slate-300">
+              Pase Turista con descuentos en aliados + <em>Perla Points</em> acumulables.
+            </td>
+            <td class="py-4 px-5">
+              <span class="font-mono text-white font-semibold">Pase: $15 / $25 / $35</span>
+              <div class="text-[10px] text-slate-400 mt-0.5">El turista paga (USD → BCV)</div>
+            </td>
+            <td class="py-4 px-5 text-slate-300 bg-emerald-500/[0.02]">
+              <span class="text-emerald-400 font-semibold">Sin app nativa ni motor de reservas.</span>
+              <div class="text-slate-400 text-[11px] mt-0.5">Bookealo entrega pases en Apple/Google Wallet y resuelve la mesa y la cocina del local. Socio potencial de contenido.</div>
+            </td>
+          </tr>
+
+          <tr class="hover:bg-[#12151E]/60 transition-colors">
+            <td class="py-4 px-5">
+              <div class="font-bold text-white text-sm">Cariba</div>
+              <div class="text-[10px] text-slate-400 mt-0.5 font-medium">● En Stores (Abr-2026)</div>
+            </td>
+            <td class="py-4 px-5 text-slate-300">
+              <span class="font-medium text-white">Margarita</span>
+              <div class="text-[10px] text-slate-500 mt-0.5">Directorio de planes</div>
+            </td>
+            <td class="py-4 px-5 text-slate-300">
+              Mapa "Explorar" para descubrir planes, restaurantes y experiencias.
+            </td>
+            <td class="py-4 px-5">
+              <span class="font-mono text-slate-400 font-semibold">No publicado</span>
+              <div class="text-[10px] text-slate-500 mt-0.5">App gratis para el usuario</div>
+            </td>
+            <td class="py-4 px-5 text-slate-300 bg-emerald-500/[0.02]">
+              <span class="text-emerald-400 font-semibold">Tracción cercana a cero.</span>
+              <div class="text-slate-400 text-[11px] mt-0.5">Sin motor de reservas funcional, sin tours 360°, sin POS ni hardware. Bookealo sale con stack completo.</div>
+            </td>
+          </tr>
+
+          <tr class="hover:bg-[#12151E]/60 transition-colors">
+            <td class="py-4 px-5">
+              <div class="font-bold text-white text-sm">Queda (Queda App)</div>
+              <div class="text-[10px] text-slate-400 mt-0.5 font-medium">● Activa Local</div>
+            </td>
+            <td class="py-4 px-5 text-slate-300">
+              <span class="font-medium text-white">Margarita / Caracas</span>
+              <div class="text-[10px] text-slate-500 mt-0.5">Nightlife & Gastro</div>
+            </td>
+            <td class="py-4 px-5 text-slate-300">
+              Intento local de digitalizar la lista de reservas en discotecas y restaurantes.
+            </td>
+            <td class="py-4 px-5">
+              <span class="font-mono text-slate-400 font-semibold">Por comisión / acuerdo</span>
+              <div class="text-[10px] text-slate-500 mt-0.5">1-2 comercios verificados</div>
+            </td>
+            <td class="py-4 px-5 text-slate-300 bg-emerald-500/[0.02]">
+              <span class="text-emerald-400 font-semibold">Sin integración con Google Maps.</span>
+              <div class="text-slate-400 text-[11px] mt-0.5">Interfaz básica; no tiene tarjetas Wallet, ni realidad aumentada, ni bot de reseñas con IA.</div>
+            </td>
+          </tr>
+
+          <tr class="hover:bg-[#12151E]/60 transition-colors">
+            <td class="py-4 px-5">
+              <div class="font-bold text-white text-sm">La M3sa</div>
+              <div class="text-[10px] text-slate-400 mt-0.5 font-medium">● Web / Portal</div>
+            </td>
+            <td class="py-4 px-5 text-slate-300">
+              <span class="font-medium text-white">Caracas</span>
+              <div class="text-[10px] text-slate-500 mt-0.5">Directorio gastronómico</div>
+            </td>
+            <td class="py-4 px-5 text-slate-300">
+              Directorio de restaurantes con botón de solicitud de reserva.
+            </td>
+            <td class="py-4 px-5">
+              <span class="font-mono text-slate-400 font-semibold">SaaS por definir</span>
+              <div class="text-[10px] text-slate-500 mt-0.5">Sin app publicada en stores</div>
+            </td>
+            <td class="py-4 px-5 text-slate-300 bg-emerald-500/[0.02]">
+              <span class="text-emerald-400 font-semibold">Falta de inmersión y presencia física.</span>
+              <div class="text-slate-400 text-[11px] mt-0.5">Bookealo cuenta con chips NFC en cada mesa, tours 360° en Maps y suite POS Kamra con modo offline.</div>
+            </td>
+          </tr>
+
+        </tbody>
+      </table>
+    </div>
+
+    <!-- FOOTER CORPORATIVO -->
+    <div class="mt-8 pt-4 border-t border-[#202430] flex items-center justify-between text-[11px] text-slate-500">
+      <div class="flex items-center gap-2">
+        <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+        <span>bukea.inkbytecorpore.workers.dev</span>
+        <span>•</span>
+        <span>Plan Express 4 Semanas</span>
+      </div>
+      <div>© 2026 Bookealo Inc. Todos los derechos reservados. Confidencial.</div>
+    </div>
+    </body></html>

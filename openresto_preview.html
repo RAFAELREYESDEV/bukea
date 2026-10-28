@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OpenResto — Análisis & Demo para Bookealo</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            display: ['"Space Grotesk"', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              gold: '#D4AF37',
+              dark: '#0A0B0E',
+              card: '#12141A',
+              border: '#232733',
+            }
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-[#0A0B0E] text-slate-200 font-sans min-h-screen">
+
+  <!-- Header -->
+  <header class="border-b border-brand-border bg-[#0A0B0E]/90 sticky top-0 z-50 backdrop-blur-md">
+    <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <span class="w-8 h-8 rounded-lg bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 flex items-center justify-center font-bold text-sm">
+          OR
+        </span>
+        <div>
+          <h1 class="font-display font-bold text-base text-white">OpenResto <span class="text-xs text-slate-400 font-normal">| Referencia para Bookealo</span></h1>
+        </div>
+      </div>
+      <div class="flex items-center gap-3">
+        <a href="https://openres.to" target="_blank" class="px-3.5 py-1.5 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-black text-xs font-bold transition-all flex items-center gap-1.5 shadow-lg shadow-emerald-500/20">
+          <span>Abrir Demo en Vivo</span>
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Banner de Credenciales -->
+  <div class="bg-gradient-to-r from-emerald-950/60 via-brand-card to-slate-900 border-b border-brand-border px-6 py-3">
+    <div class="max-w-6xl mx-auto flex flex-wrap items-center justify-between gap-4 text-xs">
+      <div class="flex items-center gap-2">
+        <span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 font-mono font-semibold">Live Demo Activo</span>
+        <span class="text-slate-300">Puedes probar el panel administrador oficial con estas credenciales:</span>
+      </div>
+      <div class="flex items-center gap-4 font-mono text-[11px]">
+        <div class="bg-black/40 px-2.5 py-1 rounded border border-brand-border">
+          <span class="text-slate-400">Email:</span> <span class="text-emerald-300 font-semibold select-all">example@example.com</span>
+        </div>
+        <div class="bg-black/40 px-2.5 py-1 rounded border border-brand-border">
+          <span class="text-slate-400">Password:</span> <span class="text-emerald-300 font-semibold select-all">password</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Contenedor Principal -->
+  <main class="max-w-6xl mx-auto px-6 py-8">
+    
+    <!-- Pestañas de Navegación -->
+    <div class="flex gap-2 border-b border-brand-border pb-4 mb-8">
+      <button onclick="setTab('demo')" id="tab-demo" class="px-4 py-2 rounded-lg text-xs font-bold bg-brand-border text-white transition-all">
+        🌐 Demo en Vivo Embebida
+      </button>
+      <button onclick="setTab('reserva')" id="tab-reserva" class="px-4 py-2 rounded-lg text-xs font-medium text-slate-400 hover:text-white transition-all">
+        📱 Flujo de Reserva Comensal
+      </button>
+      <button onclick="setTab('admin')" id="tab-admin" class="px-4 py-2 rounded-lg text-xs font-medium text-slate-400 hover:text-white transition-all">
+        🖥️ Dashboard de Administrador
+      </button>
+      <button onclick="setTab('takeaways')" id="tab-takeaways" class="px-4 py-2 rounded-lg text-xs font-medium text-slate-400 hover:text-white transition-all">
+        💡 Lo que Bookealo Debe Reutilizar
+      </button>
+    </div>
+
+    <!-- SECCIÓN 1: DEMO EN VIVO -->
+    <section id="content-demo" class="space-y-4">
+      <div class="flex items-center justify-between">
+        <div>
+          <h2 class="text-lg font-bold text-white font-display">Simulador en Vivo de OpenResto</h2>
+          <p class="text-xs text-slate-400">Navega la aplicación real directamente aquí abajo o ábrela en pestaña completa.</p>
+        </div>
+        <div class="flex gap-2 text-xs">
+          <button onclick="setFrameSize('mobile')" class="px-3 py-1 rounded bg-brand-card border border-brand-border text-slate-300 hover:text-white">📱 Móvil</button>
+          <button onclick="setFrameSize('tablet')" class="px-3 py-1 rounded bg-brand-card border border-brand-border text-slate-300 hover:text-white">📟 Tablet</button>
+          <button onclick="setFrameSize('full')" class="px-3 py-1 rounded bg-brand-card border border-brand-border text-slate-300 hover:text-white">💻 Completo</button>
+        </div>
+      </div>
+
+      <div class="flex justify-center bg-black/60 p-4 rounded-2xl border border-brand-border">
+        <div id="frame-container" class="w-full h-[720px] transition-all duration-300 rounded-xl overflow-hidden shadow-2xl border border-brand-border/80 bg-white">
+          <iframe src="https://openres.to" class="w-full h-full border-0" title="OpenResto Live Demo"></iframe>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECCIÓN 2: FLUJO DE RESERVA -->
+    <section id="content-reserva" class="hidden space-y-6">
+      <div class="bg-brand-card p-6 rounded-2xl border border-brand-border">
+        <h2 class="text-lg font-bold text-white font-display mb-2">Flujo de Reserva de Mesa (Comensal)</h2>
+        <p class="text-xs text-slate-400 mb-6 leading-relaxed">
+          OpenResto utiliza un flujo sin fricción: el usuario escoge personas, fecha y hora. En cuanto selecciona el turno, la mesa queda <strong>retenida automáticamente durante 5 minutos</strong> mientras ingresa su nombre y correo.
+        </p>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+          <img src="openresto_ref/.github/assets/styled-booking.gif" class="rounded-xl border border-brand-border shadow-lg w-full" alt="Flujo Desktop">
+          <div class="space-y-4 text-xs">
+            <div class="p-4 rounded-xl bg-black/40 border border-brand-border">
+              <span class="text-emerald-400 font-bold block mb-1">1. Retención Temporal (Hold de 5 min)</span>
+              Evita colisiones cuando varios usuarios intentan reservar la misma mesa al mismo tiempo.
+            </div>
+            <div class="p-4 rounded-xl bg-black/40 border border-brand-border">
+              <span class="text-emerald-400 font-bold block mb-1">2. Cero Cuentas Obligatorias</span>
+              El comensal solo ingresa nombre, email y teléfono. No hay contraseñas que recordar.
+            </div>
+            <div class="p-4 rounded-xl bg-black/40 border border-brand-border">
+              <span class="text-emerald-400 font-bold block mb-1">3. Exportación a Apple/Google Calendar</span>
+              Al confirmar, entrega de inmediato el botón `.ics` para sincronizar con el calendario del móvil.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECCIÓN 3: DASHBOARD ADMINISTRADOR -->
+    <section id="content-admin" class="hidden space-y-6">
+      <div class="bg-brand-card p-6 rounded-2xl border border-brand-border">
+        <h2 class="text-lg font-bold text-white font-display mb-2">Dashboard Operativo de Restaurante</h2>
+        <p class="text-xs text-slate-400 mb-6 leading-relaxed">
+          Permite al gerente del restaurante ver el mapa de la sala (floor plan), la lista de turnos (service view), controlar capacidad por hora y editar información básica.
+        </p>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+          <img src="openresto_ref/.github/assets/styled-admin.gif" class="rounded-xl border border-brand-border shadow-lg w-full" alt="Dashboard Admin">
+          <div class="space-y-4 text-xs">
+            <div class="p-4 rounded-xl bg-black/40 border border-brand-border">
+              <span class="text-brand-gold font-bold block mb-1">Timetable en Vivo</span>
+              Vista por franjas horarias (12:00, 12:30, 13:00) con estado de mesas ocupadas y libres.
+            </div>
+            <div class="p-4 rounded-xl bg-black/40 border border-brand-border">
+              <span class="text-brand-gold font-bold block mb-1">Pacing & Políticas de Reserva</span>
+              Límite de comensales por cada 15 minutos para que la cocina nunca colapse.
+            </div>
+            <div class="p-4 rounded-xl bg-black/40 border border-brand-border">
+              <span class="text-brand-gold font-bold block mb-1">Secciones y Mesas</span>
+              Configuración de Terraza, Salón Principal, Barra y número de comensales mínimos/máximos por mesa.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECCIÓN 4: TAKEAWAYS PARA BOOKEALO -->
+    <section id="content-takeaways" class="hidden space-y-6">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        
+        <div class="p-6 rounded-2xl bg-brand-card border border-emerald-500/30">
+          <h3 class="font-bold text-sm text-emerald-400 font-display mb-3">✅ Lo que debemos REUTILIZAR de OpenResto</h3>
+          <ul class="space-y-3 text-xs text-slate-300">
+            <li class="flex items-start gap-2">
+              <span class="text-emerald-400 font-bold">1.</span>
+              <span><strong>El algoritmo de reserva con bloqueo de 5 minutos:</strong> Bloquea la mesa en Supabase (`status = 'held'`) con un `expires_at = NOW() + INTERVAL '5 min'`.</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <span class="text-emerald-400 font-bold">2.</span>
+              <span><strong>La lógica de Pacing:</strong> Evitar que se agrupen 50 personas a las 8:00 PM; escalonar reservas cada 15-30 min para proteger a los cocineros.</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <span class="text-emerald-400 font-bold">3.</span>
+              <span><strong>La arquitectura de Secciones y Mesas:</strong> Salón, Terraza, VIP con capacidad mínima y máxima por mesa.</span>
+            </li>
+          </ul>
+        </div>
+
+        <div class="p-6 rounded-2xl bg-brand-card border border-brand-gold/30">
+          <h3 class="font-bold text-sm text-brand-gold font-display mb-3">🚀 La CAPA SUPERIOR que Bookealo agrega (Nuestra Diferenciación)</h3>
+          <ul class="space-y-3 text-xs text-slate-300">
+            <li class="flex items-start gap-2">
+              <span class="text-brand-gold font-bold">1.</span>
+              <span><strong>Google Maps 360° & StreetView:</strong> OpenResto no tiene mapas visuales ni tours; Bookealo sí.</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <span class="text-brand-gold font-bold">2.</span>
+              <span><strong>Pases de Apple & Google Wallet:</strong> Tarjetas con puntos y estatus en el teléfono de comensales.</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <span class="text-brand-gold font-bold">3.</span>
+              <span><strong>Chips NFC en Mesa & POS Kamra:</strong> Comandas en cocina (KDS) y pago directo en mesa con NFC.</span>
+            </li>
+          </ul>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <script>
+    function setTab(name) {
+      ['demo', 'reserva', 'admin', 'takeaways'].forEach(t => {
+        document.getElementById('content-' + t).classList.add('hidden');
+        const btn = document.getElementById('tab-' + t);
+        btn.className = 'px-4 py-2 rounded-lg text-xs font-medium text-slate-400 hover:text-white transition-all';
+      });
+      document.getElementById('content-' + name).classList.remove('hidden');
+      const activeBtn = document.getElementById('tab-' + name);
+      activeBtn.className = 'px-4 py-2 rounded-lg text-xs font-bold bg-brand-border text-white transition-all';
+    }
+
+    function setFrameSize(size) {
+      const el = document.getElementById('frame-container');
+      if (size === 'mobile') {
+        el.className = 'w-[390px] h-[720px] transition-all duration-300 rounded-3xl overflow-hidden shadow-2xl border-4 border-slate-700 bg-white';
+      } else if (size === 'tablet') {
+        el.className = 'w-[768px] h-[720px] transition-all duration-300 rounded-2xl overflow-hidden shadow-2xl border-2 border-slate-700 bg-white';
+      } else {
+        el.className = 'w-full h-[720px] transition-all duration-300 rounded-xl overflow-hidden shadow-2xl border border-brand-border/80 bg-white';
+      }
+    }
+  </script>
+
+</body>
+</html>
