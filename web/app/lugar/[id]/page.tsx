@@ -27,14 +27,6 @@ import ReviewsList from './ReviewsList';
 import CarruselFotos from './CarruselFotos';
 import MenuDigital from './MenuDigital';
 
-declare global {
-  namespace JSX {
-    interface IntrinsicElements {
-      'model-viewer': any;
-    }
-  }
-}
-
 const fmtTime = (s: string) => {
   try {
     return new Date(s).toLocaleTimeString('es-VE', { hour: '2-digit', minute: '2-digit' });
