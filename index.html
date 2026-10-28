@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bookealo — Ecosistema Digital de Reservas & Experiencias Gastronómicas</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            display: ['"Space Grotesk"', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              gold: '#D4AF37',
+              goldLight: '#F3E5AB',
+              accent: '#3B82F6',
+              dark: '#0A0B0E',
+              card: '#12141A',
+              border: '#232733',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body {
+      background-color: #0A0B0E;
+      color: #E2E8F0;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+    .glow-gold {
+      box-shadow: 0 0 30px -5px rgba(212, 175, 55, 0.25);
+    }
+    .gradient-text {
+      background: linear-gradient(135deg, #FFF 0%, #D4AF37 50%, #9A7B1C 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+  </style>
+</head>
+<body class="min-h-screen antialiased selection:bg-brand-gold selection:text-black">
+
+  <!-- Header -->
+  <nav class="border-b border-brand-border/60 bg-brand-dark/80 backdrop-blur-md sticky top-0 z-50">
+    <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-brand-gold to-yellow-200 flex items-center justify-center text-black font-bold text-lg font-display">
+          B
+        </div>
+        <span class="font-display font-bold text-xl tracking-tight text-white">Bookealo<span class="text-brand-gold">.</span></span>
+      </div>
+      <div class="flex items-center gap-4 text-xs font-medium">
+        <span class="px-2.5 py-1 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 flex items-center gap-1.5">
+          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+          Proyecto Activo
+        </span>
+        <a href="https://github.com/RAFAELREYESDEV/bukea" target="_blank" class="text-slate-400 hover:text-white transition-colors">
+          GitHub &rarr;
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <main class="max-w-6xl mx-auto px-6 py-20 text-center">
+    <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-brand-card border border-brand-border text-xs text-brand-gold mb-8 font-medium">
+      👑 El Trato Real: Reservas de Estatus & Inmersión Espacial
+    </div>
+    
+    <h1 class="text-4xl sm:text-6xl font-extrabold tracking-tight font-display mb-6 max-w-4xl mx-auto">
+      Elevando la gastronomía al estándar de <span class="gradient-text">precisión táctica</span>
+    </h1>
+
+    <p class="text-slate-400 max-w-2xl mx-auto text-base sm:text-lg mb-10 leading-relaxed">
+      Ecosistema unificado de reservas inteligentes, digitalización 360° en Google Maps, realidad aumentada de platos estrella, chips NFC en mesa y suite POS All-in-One.
+    </p>
+
+    <!-- Pilares de Innovación -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 text-left my-16">
+      <div class="p-5 rounded-xl bg-brand-card border border-brand-border">
+        <div class="text-2xl mb-3">🌐</div>
+        <h3 class="font-bold text-white text-sm mb-1">Google Maps 360°</h3>
+        <p class="text-slate-400 text-xs leading-relaxed">StreetView y tours virtuales interactivos integrados directamente en la ficha del negocio.</p>
+      </div>
+
+      <div class="p-5 rounded-xl bg-brand-card border border-brand-border">
+        <div class="text-2xl mb-3">💳</div>
+        <h3 class="font-bold text-white text-sm mb-1">Pases Wallet</h3>
+        <p class="text-slate-400 text-xs leading-relaxed">Fidelización instantánea mediante Apple & Google Wallet con puntos que no expiran.</p>
+      </div>
+
+      <div class="p-5 rounded-xl bg-brand-card border border-brand-border">
+        <div class="text-2xl mb-3">⚡</div>
+        <h3 class="font-bold text-white text-sm mb-1">Operativa NFC</h3>
+        <p class="text-slate-400 text-xs leading-relaxed">Chips NFC dedicados por mesa para vinculación de cuentas individuales y pagos inmediatos.</p>
+      </div>
+
+      <div class="p-5 rounded-xl bg-brand-card border border-brand-border">
+        <div class="text-2xl mb-3">🖥️</div>
+        <h3 class="font-bold text-white text-sm mb-1">POS & KDS Autónomo</h3>
+        <p class="text-slate-400 text-xs leading-relaxed">Herramienta interna con pantalla de cocina, comandas, recetas y modo offline de respaldo.</p>
+      </div>
+    </div>
+
+    <!-- Tiers de Negocio -->
+    <div class="mt-20">
+      <div class="text-xs uppercase tracking-widest text-slate-400 font-bold mb-3">Modelo de Suscripción</div>
+      <h2 class="text-2xl sm:text-3xl font-bold font-display text-white mb-12">Planes Estratégicos para Comercios</h2>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-left">
+        <!-- Tier 1 -->
+        <div class="p-6 rounded-2xl bg-brand-card border border-brand-border flex flex-col justify-between">
+          <div>
+            <span class="text-xs font-bold uppercase tracking-wider text-emerald-400">Tier 1 — Entry</span>
+            <div class="mt-4 mb-2 flex items-baseline gap-1">
+              <span class="text-4xl font-extrabold font-display text-white">$40</span>
+              <span class="text-slate-400 text-sm">/mes</span>
+            </div>
+            <p class="text-slate-400 text-xs mb-6">Visibilidad optimizada y motor de reservas base.</p>
+            <ul class="space-y-2.5 text-xs text-slate-300">
+              <li class="flex items-center gap-2">✓ Ficha optimizada en Google Maps</li>
+              <li class="flex items-center gap-2">✓ Motor de reservas integrado a Maps</li>
+              <li class="flex items-center gap-2">✓ Bot de reseñas con LLM</li>
+              <li class="flex items-center gap-2">✓ CRM básico de comensales</li>
+              <li class="flex items-center gap-2">✓ Menú / Carta interactiva</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Tier 2 -->
+        <div class="p-6 rounded-2xl bg-brand-card border-2 border-brand-gold/60 glow-gold relative flex flex-col justify-between">
+          <div class="absolute -top-3 right-6 bg-brand-gold text-black text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full">
+            Más Popular
+          </div>
+          <div>
+            <span class="text-xs font-bold uppercase tracking-wider text-brand-gold">Tier 2 — Mid</span>
+            <div class="mt-4 mb-2 flex items-baseline gap-1">
+              <span class="text-4xl font-extrabold font-display text-white">$60</span>
+              <span class="text-slate-400 text-sm">/mes</span>
+            </div>
+            <p class="text-slate-400 text-xs mb-6">Inmersión espacial 360° y fidelización de clientes.</p>
+            <ul class="space-y-2.5 text-xs text-slate-300">
+              <li class="flex items-center gap-2 font-semibold text-white">✓ Todo lo incluido en Tier 1</li>
+              <li class="flex items-center gap-2">✓ Fotografías 360° en Google Maps</li>
+              <li class="flex items-center gap-2">✓ Tarjeta digital Wallet (Apple/Google)</li>
+              <li class="flex items-center gap-2">✓ Kit de 12 chips NFC para mesas</li>
+              <li class="flex items-center gap-2">✓ Módulo RSVP para eventos VIP</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Tier 3 -->
+        <div class="p-6 rounded-2xl bg-brand-card border border-brand-border flex flex-col justify-between">
+          <div>
+            <span class="text-xs font-bold uppercase tracking-wider text-purple-400">Tier 3 — Top of The Line</span>
+            <div class="mt-4 mb-2 flex items-baseline gap-1">
+              <span class="text-4xl font-extrabold font-display text-white">$100</span>
+              <span class="text-slate-400 text-sm">/mes</span>
+            </div>
+            <p class="text-slate-400 text-xs mb-6">Stack operativo total y realidad aumentada.</p>
+            <ul class="space-y-2.5 text-xs text-slate-300">
+              <li class="flex items-center gap-2 font-semibold text-white">✓ Todo lo de Tiers anteriores</li>
+              <li class="flex items-center gap-2">✓ Tour virtual 360° interactivo</li>
+              <li class="flex items-center gap-2">✓ Menú 3D / AR para 4 platos estrella</li>
+              <li class="flex items-center gap-2">✓ Suite POS / KDS completa (modo offline)</li>
+              <li class="flex items-center gap-2">✓ Orquestador de pagos multimoneda</li>
+              <li class="flex items-center gap-2">✓ Algoritmo de scoring predictivo & LTV</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Roadmap 4 Semanas -->
+    <div class="mt-20 border-t border-brand-border/60 pt-16">
+      <div class="text-xs uppercase tracking-widest text-slate-400 font-bold mb-3">Plan Express de 4 Semanas</div>
+      <h2 class="text-2xl font-bold font-display text-white mb-8">Roadmap de Ejecución del Equipo</h2>
+      
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 text-left">
+        <div class="p-4 rounded-xl bg-brand-card border border-emerald-500/30">
+          <span class="text-xs font-bold text-emerald-400">Semana 1</span>
+          <div class="font-bold text-sm text-white mt-1 mb-2">Core Engine & UI Base</div>
+          <p class="text-slate-400 text-xs leading-relaxed">DB relacional, motor de reservas T1, CRM básico, bot de reseñas y vistas móviles iniciales.</p>
+        </div>
+
+        <div class="p-4 rounded-xl bg-brand-card border border-brand-border">
+          <span class="text-xs font-bold text-amber-400">Semana 2</span>
+          <div class="font-bold text-sm text-white mt-1 mb-2">Spatial & Hardware NFC</div>
+          <p class="text-slate-400 text-xs leading-relaxed">Google Maps API, StreetView, pases Wallet, pruebas NFC en mesa y pasarelas de pago.</p>
+        </div>
+
+        <div class="p-4 rounded-xl bg-brand-card border border-brand-border">
+          <span class="text-xs font-bold text-blue-400">Semana 3</span>
+          <div class="font-bold text-sm text-white mt-1 mb-2">POS Interno & Resiliencia</div>
+          <p class="text-slate-400 text-xs leading-relaxed">KDS, comandas, recetas, modo offline autónomo e inteligencia de scoring de comensales.</p>
+        </div>
+
+        <div class="p-4 rounded-xl bg-brand-card border border-brand-border">
+          <span class="text-xs font-bold text-purple-400">Semana 4</span>
+          <div class="font-bold text-sm text-white mt-1 mb-2">QA, Piloto & Lanzamiento</div>
+          <p class="text-slate-400 text-xs leading-relaxed">Pruebas E2E, piloto en comercios aliados seleccionados, stores y salida a producción.</p>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="border-t border-brand-border/60 py-8 text-center text-xs text-slate-500">
+    <p>© 2026 Bookealo. Ecosistema Digital Protegido. Desplegado en Cloudflare Pages.</p>
+  </footer>
+
+</body>
+</html>
