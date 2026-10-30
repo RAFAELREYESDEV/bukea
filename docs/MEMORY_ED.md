@@ -103,6 +103,8 @@ npx next dev -p 3004
 ```
 URL local: **http://localhost:3004**
 
+> **⚠️ Regla de Estabilidad de UI:** NUNCA ejecutar `next build` mientras el servidor `next dev` esté corriendo en segundo plano, ya que Next.js sobreescribe la carpeta `.next/` con artefactos de producción y corrompe los hashes del CSS en caliente (provocando error 404 en los estilos y dejando la interfaz en HTML crudo). Si se requiere compilar, detener primero el proceso de desarrollo y luego reiniciar con `.next` limpio.
+
 ### Flujo de Git y GitHub
 - **Cuenta autenticada:** `metroinmersion-rgb` vía GitHub CLI (`gh`).
 - **Rama:** `feat/rol4-user-ui`.
