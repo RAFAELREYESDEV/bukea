@@ -55,7 +55,10 @@ const fmtDate = (d: string) => {
 export default function LugarPage() {
   const { id } = useParams<{ id: string }>();
   const router = useRouter();
-  const [b, setB] = useState<Business | null>(null);
+  const [b, setB] = useState<Business | null>(() => {
+    if (!id) return null;
+    return BUSINESSES_MOCK.find(m => m.id === id || m.slug === id) || null;
+  });
   const [date, setDate] = useState<string>(() => new Date(Date.now() + 86400000).toISOString().slice(0, 10));
   const [slots, setSlots] = useState<{ start: string; end: string; available: boolean }[]>([]);
   const [sel, setSel] = useState<{ start: string; end: string; available: boolean } | null>(null);
@@ -86,6 +89,13 @@ export default function LugarPage() {
       })
       .catch(() => {});
   }, [id]);
+
+  // Actualizar título de la pestaña con la colaboración oficial
+  useEffect(() => {
+    if (b?.name) {
+      document.title = `Bukea × ${b.name}`;
+    }
+  }, [b?.name]);
 
   // Horarios de disponibilidad (API o Generados)
   useEffect(() => {
@@ -238,20 +248,24 @@ export default function LugarPage() {
           <ArrowLeft size={17} />
         </button>
 
-        <div className="text-center">
-          {/* Header requerido: Comida [TIPO] */}
-          <div className="text-xs font-semibold text-black tracking-wide font-text">
-            {cuisineHeader}
+        <div className="text-center flex flex-col items-center">
+          {/* Logo Bukea + Nombre del Restaurante */}
+          <div className="flex items-center gap-1.5 leading-none">
+            <span className="font-logo text-2xl text-black pt-0.5">Bukea</span>
+            <span className="text-xs text-neutral-400 font-light font-text">×</span>
+            <span className="text-sm font-bold text-black tracking-tight font-text">
+              {b.name}
+            </span>
           </div>
-          <div className="text-[10px] text-neutral-400 font-mono">
-            {b.name} · {b.zone}
+          <div className="text-[10px] text-neutral-500 font-mono mt-0.5">
+            {cuisineHeader} · {b.zone}
           </div>
         </div>
 
         <button
           onClick={() => {
             if (typeof window !== 'undefined' && navigator.share) {
-              navigator.share({ title: b.name, url: window.location.href });
+              navigator.share({ title: `Bukea × ${b.name}`, url: window.location.href });
             }
           }}
           className="w-9 h-9 rounded-full bg-neutral-100 border border-black/10 flex items-center justify-center text-black hover:bg-neutral-200 transition-colors"
@@ -282,9 +296,17 @@ export default function LugarPage() {
                   </span>
                 )}
               </div>
-              <h1 className="text-2xl sm:text-3xl font-bold text-black font-text tracking-tight">
-                {b.name}
-              </h1>
+              <div className="flex items-center gap-2 flex-wrap">
+                <span className="font-logo text-3xl sm:text-4xl text-black leading-none pt-1">
+                  Bukea
+                </span>
+                <span className="text-lg sm:text-xl text-neutral-400 font-light font-text">
+                  ×
+                </span>
+                <h1 className="text-2xl sm:text-3xl font-bold text-black font-text tracking-tight">
+                  {b.name}
+                </h1>
+              </div>
             </div>
 
             <div className="text-right shrink-0">
@@ -616,7 +638,11 @@ export default function LugarPage() {
             >
               <ArrowLeft size={17} />
             </button>
-            <span className="font-semibold text-sm text-black">Carta de {b.name}</span>
+            <div className="flex items-center gap-1.5">
+              <span className="font-logo text-xl text-black pt-0.5">Bukea</span>
+              <span className="text-xs text-neutral-400 font-light font-text">×</span>
+              <span className="font-semibold text-sm text-black">Carta de {b.name}</span>
+            </div>
             <div className="w-9" />
           </header>
           <div className="max-w-2xl mx-auto p-4">

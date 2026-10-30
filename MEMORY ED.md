@@ -56,6 +56,9 @@
   - Flotante tipo liquid glass con 4 vistas: *Explorar, Mapa interactivo, Mis Reservas* (con contador en vivo) y *Pase Digital Wallet*.
 
 ### B. Detalle del Restaurante (`web/app/lugar/[id]/page.tsx`)
+- **Co-Branding Oficial ("Bukea x [Restaurante]"):**
+  - En las páginas de los locales, tanto la barra superior (Topbar) como el título de la tarjeta principal deben mostrar obligatoriamente el logo de **Bukea** (con tipografía oficial Story Script) + signo de colaboración **×** + el **nombre del restaurante** (ejemplo: *Bukea x Sakay*, *Bukea x Downtown Beach Club*).
+  - El título de la pestaña del navegador también se actualiza dinámicamente como `Bukea × [Nombre]`.
 - **Encabezado Gastronómico Obligatorio:**
   - Dice obligatoriamente **"Comida [TIPO]"** (e.g. *Comida Árabe, Comida Mexicana, Comida Italiana, Comida Fusión Insular*), nunca la palabra genérica "Restaurante".
 - **Platos en Realidad Aumentada (AR):**
