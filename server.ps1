@@ -1,5 +1,5 @@
 param(
-    [int]$Port = 5500
+    [int]$Port = 3001
 )
 
 $root = $PSScriptRoot
@@ -23,13 +23,26 @@ function Get-MimeType($ext) {
         ".jpeg"  { return "image/jpeg" }
         ".svg"   { return "image/svg+xml" }
         ".ico"   { return "image/x-icon" }
+        ".webp"  { return "image/webp" }
+        ".woff2" { return "font/woff2" }
+        ".woff"  { return "font/woff" }
+        ".glb"   { return "model/gltf-binary" }
+        ".gltf"  { return "model/gltf+json" }
         default  { return "application/octet-stream" }
     }
 }
 
 try {
     $listener.Start()
-    Write-Output "Servidor HTTP local de Bookealo escuchando en $prefix"
+    Write-Output "=================================================="
+    Write-Output "🚀 Servidor & Router Bukea corriendo en:"
+    Write-Output "👉 http://localhost:$Port/"
+    Write-Output "👉 Landing:  http://localhost:$Port/"
+    Write-Output "👉 Lugares:  http://localhost:$Port/lugares"
+    Write-Output "👉 Login:    http://localhost:$Port/login"
+    Write-Output "👉 Checkout: http://localhost:$Port/checkout"
+    Write-Output "👉 Pases:    http://localhost:$Port/pases"
+    Write-Output "=================================================="
 
     while ($listener.IsListening) {
         $context = $listener.GetContext()
@@ -37,24 +50,39 @@ try {
         $response = $context.Response
 
         try {
-            $urlPath = $request.Url.LocalPath.TrimStart('/')
-            if ([string]::IsNullOrWhiteSpace($urlPath)) {
-                $urlPath = "index.html"
-            }
-            $urlPath = [System.Uri]::UnescapeDataString($urlPath)
-            $filePath = [System.IO.Path]::GetFullPath([System.IO.Path]::Combine($root, $urlPath))
+            $rawPath = $request.Url.LocalPath.TrimStart('/')
+            $cleanRoute = $rawPath.ToLower().TrimEnd('/')
+            $filePath = $null
 
-            if (-not $filePath.StartsWith($root, [System.StringComparison]::OrdinalIgnoreCase)) {
-                $response.StatusCode = 403
-                $response.Close()
-                continue
+            # Router de URLs amigables
+            switch ($cleanRoute) {
+                ""           { $filePath = [System.IO.Path]::Combine($root, "index.html") }
+                "vip"        { $filePath = [System.IO.Path]::Combine($root, "proyecto_web", "index.html") }
+                "login"      { $filePath = [System.IO.Path]::Combine($root, "proyecto_web", "index.html") }
+                "registro"   { $filePath = [System.IO.Path]::Combine($root, "proyecto_web", "index.html") }
+                "lugares"    { $filePath = [System.IO.Path]::Combine($root, "proyecto_web", "lugares.html") }
+                "checkout"   { $filePath = [System.IO.Path]::Combine($root, "proyecto_web", "checkout_stepper.html") }
+                "escudo"     { $filePath = [System.IO.Path]::Combine($root, "proyecto_web", "checkout_stepper.html") }
+                "pases"      { $filePath = [System.IO.Path]::Combine($root, "proyecto_web", "mis_pases.html") }
+                "mis-pases"  { $filePath = [System.IO.Path]::Combine($root, "proyecto_web", "mis_pases.html") }
+                "admin"      { $filePath = [System.IO.Path]::Combine($root, "proyecto_web", "inicio.html") }
+                "openresto"  { $filePath = [System.IO.Path]::Combine($root, "openresto_preview.html") }
+                default {
+                    $urlPath = [System.Uri]::UnescapeDataString($rawPath)
+                    $resolved = [System.IO.Path]::GetFullPath([System.IO.Path]::Combine($root, $urlPath))
+                    if ($resolved.StartsWith($root, [System.StringComparison]::OrdinalIgnoreCase)) {
+                        if (Test-Path $resolved -PathType Container) {
+                            $filePath = [System.IO.Path]::Combine($resolved, "index.html")
+                        } elseif (Test-Path $resolved -PathType Leaf) {
+                            $filePath = $resolved
+                        } elseif (Test-Path ($resolved + ".html") -PathType Leaf) {
+                            $filePath = $resolved + ".html"
+                        }
+                    }
+                }
             }
 
-            if (Test-Path $filePath -PathType Container) {
-                $filePath = [System.IO.Path]::Combine($filePath, "index.html")
-            }
-
-            if (Test-Path $filePath -PathType Leaf) {
+            if ($filePath -and (Test-Path $filePath -PathType Leaf)) {
                 $ext = [System.IO.Path]::GetExtension($filePath).ToLower()
                 $bytes = [System.IO.File]::ReadAllBytes($filePath)
                 $response.ContentType = Get-MimeType $ext
@@ -63,13 +91,13 @@ try {
                 $response.OutputStream.Write($bytes, 0, $bytes.Length)
             } else {
                 $response.StatusCode = 404
-                $err = [System.Text.Encoding]::UTF8.GetBytes("<h1>404 Not Found</h1><p>$urlPath</p>")
+                $err = [System.Text.Encoding]::UTF8.GetBytes("<!DOCTYPE html><html><body style='font-family:sans-serif;padding:2rem'><h1>404 Ruta no encontrada</h1><p>Ruta solicitada: $rawPath</p><a href='/'>Ir al Inicio</a></body></html>")
                 $response.ContentType = "text/html; charset=utf-8"
                 $response.ContentLength64 = $err.Length
                 $response.OutputStream.Write($err, 0, $err.Length)
             }
         } catch {
-            # Ignorar errores de conexión
+            # Ignorar excepciones de clientes desconectados
         } finally {
             $response.Close()
         }
