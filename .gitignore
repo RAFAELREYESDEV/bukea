@@ -3,6 +3,16 @@ node_modules/
 .pnp
 .pnp.js
 
+# SQLite & Databases
+*.sqlite
+*.sqlite3
+*.sqlite-shm
+*.sqlite-wal
+*.db
+*.db-journal
+*.db-shm
+*.db-wal
+
 # Entornos virtuales & Python
 __pycache__/
 *.py[cod]
@@ -31,3 +41,6 @@ Thumbs.db
 # IDEs
 .vscode/
 .idea/
+
+# Carpetas de referencia externa
+openresto_ref/
